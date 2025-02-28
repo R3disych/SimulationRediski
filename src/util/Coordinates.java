@@ -12,11 +12,11 @@ public class Coordinates {
     }
 
     public int getWidth() {
-        return this.width;
+        return width;
     }
 
     public int getHeight() {
-        return this.height;
+        return height;
     }
 
     public void setCoordinates(int x, int y) {
@@ -25,13 +25,14 @@ public class Coordinates {
     }
 
     public double distanceTo(Coordinates other) {
-        return (double)(Math.abs(this.getWidth() - other.getWidth()) + Math.abs(this.getHeight() - other.getHeight()));
+        return Math.abs(this.getWidth() - other.getWidth()) + Math.abs(this.getHeight() - other.getHeight());
     }
 
+    @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if(this == obj) {
             return true;
-        } else if (obj != null && this.getClass() == obj.getClass()) {
+        } else if(obj != null && this.getClass() == obj.getClass()) {
             Coordinates c = (Coordinates)obj;
             return this.width == c.width && this.height == c.height;
         } else {
@@ -39,6 +40,7 @@ public class Coordinates {
         }
     }
 
+    @Override
     public int hashCode() {
         return Objects.hash(new Object[]{this.width, this.height});
     }

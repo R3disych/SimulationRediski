@@ -1,19 +1,12 @@
 import actions.InitSimulation;
 import actions.MakeTurn;
 import gameMap.GameMap;
-
-import javax.swing.*;
-
 import gameMap.GameMapUI;
 import util.PathFinder;
 
-public class Simulation {
-    private int turnsCount;
+import javax.swing.*;
 
-    public void plusTurn() {
-        ++this.turnsCount;
-    }
-
+public class Test {
     public static void main(String[] args) {
         GameMap map = InitSimulation.initSim();
         PathFinder pathFinder = new PathFinder(map);

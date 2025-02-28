@@ -1,6 +1,6 @@
 package actions;
 
-import elements.GameMap;
+import gameMap.GameMap;
 import elements.Animals.Herbivore;
 import elements.Animals.Predator;
 import elements.staticObjects.Grass;
@@ -8,8 +8,6 @@ import elements.staticObjects.Rock;
 import elements.staticObjects.Tree;
 
 public class InitSimulation {
-    public InitSimulation() {
-    }
 
     public static GameMap initSim() {
         GameMap gameMap = new GameMap();

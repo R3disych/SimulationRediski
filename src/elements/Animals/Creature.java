@@ -1,7 +1,7 @@
 package elements.Animals;
 
 import elements.Entity;
-import elements.GameMap;
+import gameMap.GameMap;
 import java.util.List;
 import util.MoveRequest;
 import util.PathFinder;
@@ -56,5 +56,5 @@ public abstract class Creature extends Entity {
 
     }
 
-    public abstract void makeMove(GameMap var1, PathFinder var2, List<Entity> var3, List<Entity> var4, List<MoveRequest> var5);
+    public abstract void makeMove();
 }

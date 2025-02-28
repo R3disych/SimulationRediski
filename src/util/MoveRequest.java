@@ -12,10 +12,10 @@ public class MoveRequest {
     }
 
     public Entity getEntity() {
-        return this.entity;
+        return entity;
     }
 
     public Coordinates getNewCoordinates() {
-        return this.newCoordinates;
+        return newCoordinates;
     }
 }
