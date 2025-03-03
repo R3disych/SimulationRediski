@@ -20,14 +20,14 @@ public class GameMapUI extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for(int i = 0; i < gameMap.getWidth(); i++) {
-            for(int j = 0; j < gameMap.getHeight(); j++) {
+        for(int i = 0; i <= gameMap.getWidth(); i++) {
+            for(int j = 0; j <= gameMap.getHeight(); j++) {
                 Coordinates currentCoords = new Coordinates(j, i);
                 if(gameMapEntity.containsKey(currentCoords)) {
                     Entity currentEntity = gameMapEntity.get(currentCoords);
-                    g.drawString(currentEntity.toString(), j * 20, i * 20);
+                    g.drawString(currentEntity.toString(), j * 25, i * 25);
                 } else {
-                    g.drawString(".", j * 20, i * 20);
+                    g.drawString(" .", j * 25, i * 25);
                 }
             }
         }

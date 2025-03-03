@@ -20,8 +20,8 @@ public class Predator extends Creature {
         return this.attackDamage;
     }
 
-    public Optional<Herbivore> findNearestHerbivore(GameMap map) {
-    }
+    //public Optional<Herbivore> findNearestHerbivore(GameMap map) {
+    //}
 
     public void attack(Herbivore herbivore) {
         herbivore.takeDamage(this.getAttackDamage());
@@ -32,6 +32,6 @@ public class Predator extends Creature {
         this.setHunger(this.getHunger() + herbivore.getHealth());
     }
 
-    public void makeMove() {
+    public void makeMove(GameMap map, PathFinder pathFinder) {
     }
 }

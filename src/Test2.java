@@ -1,7 +1,7 @@
 import actions.InitSimulation;
 import actions.MakeTurn;
+import actions.RemoveDead;
 import elements.Animals.Herbivore;
-import elements.Entity;
 import elements.staticObjects.Grass;
 import gameMap.GameMap;
 import gameMap.GameMapUI;
@@ -10,10 +10,8 @@ import util.PathFinder;
 
 import javax.swing.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
-public class Test {
+public class Test2 {
     public static void main(String[] args) {
         GameMap gameMap = new GameMap();
         PathFinder pathFinder = new PathFinder(gameMap);
@@ -56,6 +54,28 @@ public class Test {
          */
 
 
-        herbivore1.makeMove(gameMap, pathFinder);
+        //herbivore1.makeMove(gameMap, pathFinder);
+
+        GameMapUI mapUI = new GameMapUI(gameMap);
+        JFrame frame = new JFrame("Game Map");
+        frame.add(mapUI);
+        frame.setSize(800, 800);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        while(true) {
+            mapUI.repaint();
+
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            herbivore1.makeMove(gameMap, pathFinder);
+            //System.out.println("Current coords of herbivore1: " + herbivore1.getCoordinates().getWidth() + ", " + herbivore1.getCoordinates().getHeight());
+            RemoveDead.removeDead(gameMap);
+            //MakeTurn.makeTurn(map, pathFinder);
+        }
     }
 }

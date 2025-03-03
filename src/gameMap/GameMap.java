@@ -36,11 +36,6 @@ public class GameMap {
         gameMapEntity.put(entity.getCoordinates(), entity);
     }
 
-    public void removeEntity(Entity entity) {
-        gameMapEntity.remove(entity.getCoordinates());
-        Randomizer.removeCoordinates(entity.getCoordinates());
-    }
-
     public void moveEntity(Entity entity, Coordinates newCoordinates) {
         Coordinates oldCoordinates = entity.getCoordinates();
 
@@ -58,6 +53,13 @@ public class GameMap {
     }
 
     public List<Entity> getEntitiesNear(Coordinates coordinates, int radius) {
+        List<Entity> entities = new ArrayList<>();
+        for(Entity entity : gameMapEntity.values()) {
+            if(coordinates.distanceTo(entity.getCoordinates()) <= radius) {
+                entities.add(entity);
+            }
+        }
+        return entities;
     }
 
     public boolean isValidCoordinate(Coordinates coordinates) {

@@ -16,7 +16,7 @@ public class MakeTurn {
         List<Entity> toRemove = new ArrayList();
         List<Entity> toAdd = new ArrayList();
         List<MoveRequest> moveRequests = new ArrayList<>();
-
+        /*
         Iterator<Map.Entry<Coordinates, Entity>> iterator = gameMap.getGameMapEntity().entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<Coordinates, Entity> entry = iterator.next();
@@ -26,5 +26,7 @@ public class MakeTurn {
                 creature.makeMove(gameMap, pathFinder, toRemove, toAdd, moveRequests);
             }
         }
+
+         */
     }
 }
