@@ -18,6 +18,13 @@ public abstract class Entity {
         this.path = null;
     }
 
+    public Entity(String display, Coordinates coordinates) {
+        this.id = Randomizer.setRandomId();
+        this.display = display;
+        this.coordinates = coordinates;
+        this.path = null;
+    }
+
     public int getId() {
         return id;
     }

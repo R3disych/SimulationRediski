@@ -31,7 +31,7 @@ public class PathFinder {
 
             closedSet.add(currentCoordinates);
 
-            List<Coordinates> neighbors = getNeighbors(currentCoordinates);
+            List<Coordinates> neighbors = getNeighbors(currentCoordinates, target);
             for(Coordinates neighborCoords : neighbors) {
                 if(closedSet.contains(neighborCoords)) {
                     continue;
@@ -74,7 +74,7 @@ public class PathFinder {
         return new ArrayList<>(path);
     }
 
-    public List<Coordinates> getNeighbors(Coordinates current) {
+    public List<Coordinates> getNeighbors(Coordinates current, Coordinates target) {
         List<Coordinates> neighbors = new ArrayList<>();
         int x = current.getWidth();
         int y = current.getHeight();
@@ -87,6 +87,10 @@ public class PathFinder {
 
             Coordinates newCoordinates = new Coordinates(newX, newY);
 
+            if(newCoordinates.equals(target)) {
+                neighbors.add(newCoordinates);
+            }
+
             if(isValid(newCoordinates) && isWalkable(newCoordinates)) {
                 neighbors.add(newCoordinates);
             }
@@ -98,7 +102,7 @@ public class PathFinder {
     public boolean isValid(Coordinates coordinates) {
         int x = coordinates.getWidth();
         int y = coordinates.getHeight();
-        return x >= 0 && y >= 0 && x <= map.getWidth() && y <= map.getHeight();
+        return x >= 1 && y >= 1 && x <= map.getWidth() && y <= map.getHeight();
     }
 
     public boolean isWalkable(Coordinates coordinates) {

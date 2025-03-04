@@ -4,6 +4,7 @@ import elements.Animals.Creature;
 import elements.Entity;
 import gameMap.GameMap;
 import util.Coordinates;
+import util.Randomizer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,7 @@ public class RemoveDead {
                 Creature creature = (Creature) entity;
                 if(creature.isDead()) {
                     map.getGameMapEntity().remove(coordinates);
+                    Randomizer.removeCoordinates(coordinates);
                 }
             }
         }

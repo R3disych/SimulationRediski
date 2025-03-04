@@ -13,7 +13,7 @@ public class InitSimulation {
         GameMap gameMap = new GameMap();
 
         int i;
-        for(i = 0; i < 5; ++i) {
+        for(i = 0; i < 3; ++i) {
             gameMap.addEntity(new Predator());
         }
 

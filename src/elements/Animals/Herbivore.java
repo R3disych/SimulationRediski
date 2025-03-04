@@ -17,6 +17,11 @@ public class Herbivore extends Creature {
         super("H", 75, 75);
     }
 
+    public Herbivore(Coordinates coordinates) {
+        super("H", 75, 75);
+        this.setCoordinates(coordinates);
+    }
+
     public Optional<Grass> findNearestGrass(GameMap map) {
         List<Entity> nearEntities = map.getEntitiesNear(this.getCoordinates(), 20);
         return nearEntities.stream()
@@ -31,32 +36,29 @@ public class Herbivore extends Creature {
     }
 
     public void makeMove(GameMap gameMap, PathFinder pathFinder) {
-        int i = 5;
-        if(i < 1) {
-            System.out.println("Законились ходы");
-        }
-        while(i > 0) { //еще надо проверить на isDead() тут или в статическом методе makeTurn()
-            Optional<Grass> nearGrass = findNearestGrass(gameMap);
-            if (nearGrass.isPresent()) {
-                Grass grass = nearGrass.get();
+        while(isTurnable()) { //еще надо проверить на isDead() тут или в статическом методе makeTurn()
+            Optional<Grass> nearestGrass = findNearestGrass(gameMap);
+            if (nearestGrass.isPresent()) {
+                Grass grass = nearestGrass.get();
                 if (this.getCoordinates().distanceTo(grass.getCoordinates()) <= 1 && !grass.isDead()) {
                     this.eat(grass);
                     grass.die();
                     System.out.println("Овца съела траву!");
                     this.spendTurn();
-                    i--;
                 } else {
                     List<Coordinates> path = pathFinder.findPath(this.getCoordinates(), grass.getCoordinates());
                     gameMap.moveEntity(this, path.get(1));
                     this.spendTurn();
-                    i--;
                 }
             } else {
                 this.makeRandomMove(gameMap, pathFinder);
                 this.spendTurn();
-                i--;
+                spendTurn();
                 System.out.println("Current coords of herbivore1: " + this.getCoordinates().getWidth() + ", " + this.getCoordinates().getHeight());
             }
+        }
+        if(!isTurnable()) {
+            System.out.println("Законились ходы");
         }
     }
 }

@@ -7,7 +7,7 @@ import java.util.Set;
 public class Randomizer {
     private static final Random random = new Random();
     static Set<Integer> idSet = new HashSet<>();
-    static Set<Coordinates> coordsSet = new HashSet<>();
+    static Set<Coordinates> coordsSet = new HashSet<>(); //скорее всего это состояние должен хранить класс GameMap
     private static final int maxAttempts = 100;
 
     public static int setRandomId() {
@@ -29,9 +29,15 @@ public class Randomizer {
             if(!coordsSet.contains(newCoords)) {
                 coordsSet.add(new Coordinates(x, y));
                 return newCoords;
+            } else {
+                setRandomCoordinates();
             }
         }
-        return null;
+        return null; //лучше так не делать
+    }
+
+    public static void addCoordinates(Coordinates coords) {
+        coordsSet.add(coords);
     }
 
     public static void removeCoordinates(Coordinates coords) {

@@ -18,7 +18,6 @@ public abstract class Creature extends Entity {
     private final int maxHunger;
     private boolean isDead;
     private int turns;
-    private boolean isTurnable; //наверное лишнее
 
     public Creature(String display, int maxHp, int maxHunger) {
         super(display);
@@ -28,7 +27,6 @@ public abstract class Creature extends Entity {
         this.hunger = maxHunger;
         this.isDead = false;
         this.turns = 5;
-        this.isTurnable = true;
     }
 
     public int getHealth() {
@@ -51,16 +49,24 @@ public abstract class Creature extends Entity {
         return this.health <= 0;
     }
 
+    public void die() {
+        this.isDead = true;
+    }
+
     public int getTurns() {
         return this.turns;
     }
 
     public boolean isTurnable() {
-        return this.turns <= 0;
+        return this.turns > 0;
     }
 
     public void spendTurn() {
         this.turns--;
+    }
+
+    public void restoreTurns() {
+        this.turns = 5;
     }
 
     @Override

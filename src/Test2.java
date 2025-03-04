@@ -2,6 +2,7 @@ import actions.InitSimulation;
 import actions.MakeTurn;
 import actions.RemoveDead;
 import elements.Animals.Herbivore;
+import elements.Animals.Predator;
 import elements.staticObjects.Grass;
 import gameMap.GameMap;
 import gameMap.GameMapUI;
@@ -20,8 +21,10 @@ public class Test2 {
         //herbivore1.setCoordinates(new Coordinates(3, 4));
         System.out.println("Current coords of herbivore1: " + herbivore1.getCoordinates().getWidth() + ", " + herbivore1.getCoordinates().getHeight());
 
-        //Herbivore herbivore2 = new Herbivore();
-        //System.out.println("Current coords of herbivore2: " + herbivore2.getCoordinates().getWidth() + ", " + herbivore2.getCoordinates().getHeight());
+        Herbivore herbivore2 = new Herbivore();
+        System.out.println("Current coords of herbivore2: " + herbivore2.getCoordinates().getWidth() + ", " + herbivore2.getCoordinates().getHeight());
+
+        Predator predator = new Predator();
 
         Grass grass1 = new Grass();
         System.out.println("Current coords of grass1: " + grass1.getCoordinates().getWidth() + ", " + grass1.getCoordinates().getHeight());
@@ -34,16 +37,19 @@ public class Test2 {
         System.out.println("Current coords of grass2: " + grass2.getCoordinates().getWidth() + ", " + grass2.getCoordinates().getHeight());
 
         gameMap.addEntity(herbivore1);
-        //gameMap.addEntity(herbivore2);
+        gameMap.addEntity(herbivore2);
+        gameMap.addEntity(predator);
         gameMap.addEntity(grass1);
         gameMap.addEntity(grass2);
 
 
-
+        /*
         List<Coordinates> path = pathFinder.findPath(herbivore1.getCoordinates(), grass1.getCoordinates());
         for(Coordinates c : path) {
             System.out.println(c.getWidth() + " " + c.getHeight());
         }
+
+         */
 
         /*
         Optional<Grass> grasses = herbivore1.findNearestGrass(gameMap);
@@ -64,6 +70,10 @@ public class Test2 {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         while(true) {
+            herbivore1.restoreTurns();
+            herbivore2.restoreTurns();
+            predator.restoreTurns();
+
             mapUI.repaint();
 
             try {
@@ -72,7 +82,13 @@ public class Test2 {
                 e.printStackTrace();
             }
 
+
             herbivore1.makeMove(gameMap, pathFinder);
+
+            herbivore2.makeMove(gameMap, pathFinder);
+
+            predator.makeMove(gameMap, pathFinder);
+
             //System.out.println("Current coords of herbivore1: " + herbivore1.getCoordinates().getWidth() + ", " + herbivore1.getCoordinates().getHeight());
             RemoveDead.removeDead(gameMap);
             //MakeTurn.makeTurn(map, pathFinder);
