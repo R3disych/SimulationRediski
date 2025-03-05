@@ -18,8 +18,8 @@ public class GameMap {
     private Map<Coordinates, Entity> gameMapEntity;
 
     public GameMap() {
-        this.width = 30;
-        this.height = 30;
+        this.width = 25;
+        this.height = 15;
         gameMapEntity = new HashMap<>();
     }
 

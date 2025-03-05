@@ -23,8 +23,8 @@ public class Randomizer {
 
     public static Coordinates setRandomCoordinates() {
         for(int i = 0; i < maxAttempts; i++) {
-            int x = random.nextInt(30);
-            int y = random.nextInt(30);
+            int x = random.nextInt(25);
+            int y = random.nextInt(15);
             Coordinates newCoords = new Coordinates(x, y);
             if(!coordsSet.contains(newCoords)) {
                 coordsSet.add(new Coordinates(x, y));

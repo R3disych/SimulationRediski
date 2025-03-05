@@ -20,7 +20,7 @@ public class FillGameMap {
     }
 
     public void fillGameMap() {
-        if(gameMap.getNumOfGrass() < 6) {
+        if(gameMap.getNumOfGrass() < 7) {
             gameMap.addEntity(new Grass(Randomizer.setRandomCoordinates()));
         }
 
@@ -28,7 +28,7 @@ public class FillGameMap {
             gameMap.addEntity(new Herbivore(Randomizer.setRandomCoordinates()));
         }
 
-        if(gameMap.getNumOfPredator() < 3) {
+        if(gameMap.getNumOfPredator() < 2) {
             gameMap.addEntity(new Predator(Randomizer.setRandomCoordinates()));
         }
     }

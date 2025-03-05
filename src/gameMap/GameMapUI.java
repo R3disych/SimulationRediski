@@ -22,13 +22,13 @@ public class GameMapUI extends JPanel {
     private GameMap gameMap;
     private Map<Coordinates, Entity> gameMapEntity;
     private HashMap<String, BufferedImage> images = new HashMap<>();
-    private final int cellSize = 36;
+    private final int cellSize = 45;
 
     public GameMapUI(GameMap gameMap) {
         this.gameMap = gameMap;
         this.gameMapEntity = gameMap.getGameMapEntity();
         loadImages();
-        setPreferredSize(new Dimension(gameMap.getWidth() * cellSize, gameMap.getHeight() * cellSize));
+        setPreferredSize(new Dimension(1175, 725));
     }
 
     private void loadImages() {
@@ -55,8 +55,8 @@ public class GameMapUI extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for(int x = 1; x <= gameMap.getWidth(); x++) {
-            for(int y = 1; y <= gameMap.getHeight(); y++) {
+        for(int x = 0; x <= gameMap.getWidth(); x++) {
+            for(int y = 0; y <= gameMap.getHeight(); y++) {
                 g.setColor(Color.LIGHT_GRAY);
                 g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
                 g.setColor(Color.BLACK);

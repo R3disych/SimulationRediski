@@ -26,7 +26,7 @@ public abstract class Creature extends Entity {
         this.health = maxHp;
         this.hunger = maxHunger;
         this.isDead = false;
-        this.turns = 5;
+        this.turns = 3;
     }
 
     public int getHealth() {

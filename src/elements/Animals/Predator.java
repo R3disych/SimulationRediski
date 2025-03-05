@@ -49,31 +49,25 @@ public class Predator extends Creature {
 
     public void makeMove(GameMap gameMap, PathFinder pathFinder) {
         while(isTurnable()) { //еще надо проверить на isDead() тут или в статическом методе makeTurn()
-        Optional<Herbivore> nearestHerbivore = findNearestHerbivore(gameMap);
-        if (nearestHerbivore.isPresent()) {
-            Herbivore herbivore = nearestHerbivore.get();
-            if (this.getCoordinates().distanceTo(herbivore.getCoordinates()) <= 1 && !herbivore.isDead()) {
-                this.attack(herbivore);
-
-                if(this.getCoordinates().distanceTo(herbivore.getCoordinates()) <= 1 && herbivore.isDead()) {
-                    this.eat(herbivore);
+            Optional<Herbivore> nearestHerbivore = findNearestHerbivore(gameMap);
+            if (nearestHerbivore.isPresent()) {
+                Herbivore herbivore = nearestHerbivore.get();
+                if (this.getCoordinates().distanceTo(herbivore.getCoordinates()) <= 1 && !herbivore.isDead()) {
+                    this.attack(herbivore);
+                    this.spendTurn();
+                    if (this.getCoordinates().distanceTo(herbivore.getCoordinates()) <= 1 && herbivore.isDead()) {
+                        this.eat(herbivore);
+                        this.spendTurn();
+                    }
+                } else {
+                    List<Coordinates> path = pathFinder.findPath(this.getCoordinates(), herbivore.getCoordinates());
+                    gameMap.moveEntity(this, path.get(1));
+                    this.spendTurn();
                 }
-
-                this.spendTurn();
             } else {
-                List<Coordinates> path = pathFinder.findPath(this.getCoordinates(), herbivore.getCoordinates());
-                gameMap.moveEntity(this, path.get(1));
+                this.makeRandomMove(gameMap, pathFinder);
                 this.spendTurn();
             }
-        } else {
-            this.makeRandomMove(gameMap, pathFinder);
-            this.spendTurn();
-            spendTurn();
-            System.out.println("Current coords of herbivore1: " + this.getCoordinates().getWidth() + ", " + this.getCoordinates().getHeight());
-        }
-    }
-        if(!isTurnable()) {
-            System.out.println("Законились ходы");
         }
     }
 }

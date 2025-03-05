@@ -43,7 +43,6 @@ public class Herbivore extends Creature {
                 if (this.getCoordinates().distanceTo(grass.getCoordinates()) <= 1 && !grass.isDead()) {
                     this.eat(grass);
                     grass.die();
-                    System.out.println("Овца съела траву!");
                     this.spendTurn();
                 } else {
                     List<Coordinates> path = pathFinder.findPath(this.getCoordinates(), grass.getCoordinates());
@@ -53,12 +52,7 @@ public class Herbivore extends Creature {
             } else {
                 this.makeRandomMove(gameMap, pathFinder);
                 this.spendTurn();
-                spendTurn();
-                System.out.println("Current coords of herbivore1: " + this.getCoordinates().getWidth() + ", " + this.getCoordinates().getHeight());
             }
-        }
-        if(!isTurnable()) {
-            System.out.println("Законились ходы");
         }
     }
 }

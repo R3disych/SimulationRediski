@@ -13,11 +13,11 @@ public class InitSimulation {
         GameMap gameMap = new GameMap();
 
         int i;
-        for(i = 0; i < 3; ++i) {
+        for(i = 0; i < 2; ++i) {
             gameMap.addEntity(new Predator());
         }
 
-        for(i = 0; i < 6; ++i) {
+        for(i = 0; i < 4; ++i) {
             gameMap.addEntity(new Herbivore());
         }
 
@@ -29,7 +29,7 @@ public class InitSimulation {
             gameMap.addEntity(new Rock());
         }
 
-        for(i = 0; i < 5; ++i) {
+        for(i = 0; i < 7; ++i) {
             gameMap.addEntity(new Tree());
         }
 
