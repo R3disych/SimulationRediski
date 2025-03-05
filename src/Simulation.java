@@ -8,22 +8,28 @@ import javax.swing.*;
 
 import gameMap.GameMapUI;
 import util.PathFinder;
+import util.Randomizer;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Simulation {
-    private int turnsCount;
+    public int turnsCount;
 
+    /*
     public void plusTurn() {
         ++this.turnsCount;
     }
 
+     */
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            GameMap gameMap = InitSimulation.initSim();
+            GameMap gameMap = new GameMap();
+            Randomizer randomizer = new Randomizer(gameMap);
+            InitSimulation initSimulation = new InitSimulation();
             PathFinder pathFinder = new PathFinder(gameMap);
-            FillGameMap fillMap = new FillGameMap(gameMap);
+            FillGameMap fillMap = new FillGameMap(gameMap, randomizer);
 
             GameMapUI gameMapUI = new GameMapUI(gameMap);
 
@@ -34,46 +40,24 @@ public class Simulation {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
 
-            Timer timer = new Timer(1000, new ActionListener() {
-               public void actionPerformed(ActionEvent e) {
-                   synchronized (gameMap) {
-                       MakeTurn.makeTurn(gameMap, pathFinder);
-                       RemoveDead.removeDead(gameMap);
-                       fillMap.fillGameMap();
-                   }
-                   gameMapUI.repaint();
-               }
+            randomizer.foo();
+            initSimulation.initSim(gameMap, randomizer);
+
+            AtomicInteger i = new AtomicInteger();
+            Timer timer = new Timer(1000, e -> {
+                synchronized (gameMap) {
+                    MakeTurn.makeTurn(gameMap, pathFinder);
+                    RemoveDead.removeDead(gameMap);//переставить
+                    randomizer.foo();
+                    fillMap.fillGameMap(i.get());
+                    randomizer.foo();
+                    i.getAndIncrement();
+                    System.out.println(i.get());
+                }
+                gameMapUI.repaint();
+                //наверное сюда removeDead()
             });
             timer.start();
         });
-        /*
-        GameMap map = InitSimulation.initSim();
-        PathFinder pathFinder = new PathFinder(map);
-        FillGameMap fillMap = new FillGameMap(map);
-
-        GameMapUI mapUI = new GameMapUI(map);
-        JFrame frame = new JFrame("Game Map");
-        frame.add(mapUI);
-        frame.setSize(800, 800);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-         while(true) {
-                gameMapUI.repaint();
-
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                MakeTurn.makeTurn(gameMap, pathFinder);
-                RemoveDead.removeDead(gameMap);
-                fillMap.fillGameMap();
-            }
-
-         */
-
-
     }
 }

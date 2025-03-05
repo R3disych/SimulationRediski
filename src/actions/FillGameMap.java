@@ -12,24 +12,28 @@ import java.util.Map;
 
 public class FillGameMap {
     GameMap gameMap;
+    Randomizer randomizer;
     private Map<Coordinates, Entity> gameMapEntity;
 
-    public FillGameMap(GameMap gameMap) {
+    public FillGameMap(GameMap gameMap, Randomizer randomizer) {
         this.gameMap = gameMap;
+        this.randomizer = randomizer;
         this.gameMapEntity = gameMap.getGameMapEntity();
     }
 
-    public void fillGameMap() {
-        if(gameMap.getNumOfGrass() < 7) {
-            gameMap.addEntity(new Grass(Randomizer.setRandomCoordinates()));
-        }
+    public void fillGameMap(int i) {
+        if(i % 5 == 0) {
+            if (gameMap.getNumOfGrass() < 7) {
+                gameMap.addEntity(new Grass(randomizer.getRandomCoordinates()));
+            }
 
-        if(gameMap.getNumOfHerbivore() < 4) {
-            gameMap.addEntity(new Herbivore(Randomizer.setRandomCoordinates()));
-        }
+            if (gameMap.getNumOfHerbivore() < 4) {
+                gameMap.addEntity(new Herbivore(randomizer.getRandomCoordinates()));
+            }
 
-        if(gameMap.getNumOfPredator() < 2) {
-            gameMap.addEntity(new Predator(Randomizer.setRandomCoordinates()));
+            if (gameMap.getNumOfPredator() < 2) {
+                gameMap.addEntity(new Predator(randomizer.getRandomCoordinates()));
+            }
         }
     }
 

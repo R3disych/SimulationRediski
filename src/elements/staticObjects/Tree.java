@@ -4,8 +4,8 @@ import elements.Entity;
 import util.Coordinates;
 
 public class Tree extends Entity {
-    public Tree() {
-        super("T");
+    public Tree(Coordinates coordinates) {
+        super("T", coordinates);
     }
 
     @Override

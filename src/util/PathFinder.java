@@ -102,7 +102,7 @@ public class PathFinder {
     public boolean isValid(Coordinates coordinates) {
         int x = coordinates.getWidth();
         int y = coordinates.getHeight();
-        return x >= 0 && y >= 0 && x <= map.getWidth() && y <= map.getHeight();
+        return x >= 0 && y >= 0 && x < map.getWidth() && y < map.getHeight();
     }
 
     public boolean isWalkable(Coordinates coordinates) {

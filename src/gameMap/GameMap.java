@@ -18,8 +18,8 @@ public class GameMap {
     private Map<Coordinates, Entity> gameMapEntity;
 
     public GameMap() {
-        this.width = 25;
-        this.height = 15;
+        this.width = 40;
+        this.height = 22;
         gameMapEntity = new HashMap<>();
     }
 
@@ -87,11 +87,8 @@ public class GameMap {
 
         if(gameMapEntity.containsKey(oldCoordinates) && gameMapEntity.get(oldCoordinates).equals(entity)) {
             gameMapEntity.remove(oldCoordinates);
-            Randomizer.removeCoordinates(oldCoordinates);
-
             entity.setCoordinates(newCoordinates);
             gameMapEntity.put(entity.getCoordinates(), entity);
-            Randomizer.addCoordinates(newCoordinates);
         } else {
             System.out.println("Ошибка: Entity не найдена на карте в ожидаемой позиции");
         }
@@ -109,11 +106,5 @@ public class GameMap {
             }
         }
         return entities;
-    }
-
-    public boolean isValidCoordinate(Coordinates coordinates) {
-        int x = coordinates.getWidth();
-        int y = coordinates.getHeight();
-        return x >= 0 && x < width && y >= 0 && y < height;
     }
 }

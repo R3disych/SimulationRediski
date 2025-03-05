@@ -6,33 +6,37 @@ import elements.Animals.Predator;
 import elements.staticObjects.Grass;
 import elements.staticObjects.Rock;
 import elements.staticObjects.Tree;
+import util.Randomizer;
+
+import java.util.Random;
 
 public class InitSimulation {
 
-    public static GameMap initSim() {
-        GameMap gameMap = new GameMap();
-
+    public void initSim(GameMap gameMap, Randomizer rand) {
         int i;
         for(i = 0; i < 2; ++i) {
-            gameMap.addEntity(new Predator());
+            gameMap.addEntity(new Predator(rand.getRandomCoordinates()));
         }
+        rand.foo();
 
         for(i = 0; i < 4; ++i) {
-            gameMap.addEntity(new Herbivore());
+            gameMap.addEntity(new Herbivore(rand.getRandomCoordinates()));
         }
+        rand.foo();
 
         for(i = 0; i < 7; ++i) {
-            gameMap.addEntity(new Grass());
+            gameMap.addEntity(new Grass(rand.getRandomCoordinates()));
         }
+        rand.foo();
 
         for(i = 0; i < 5; ++i) {
-            gameMap.addEntity(new Rock());
+            gameMap.addEntity(new Rock(rand.getRandomCoordinates()));
         }
+        rand.foo();
 
         for(i = 0; i < 7; ++i) {
-            gameMap.addEntity(new Tree());
+            gameMap.addEntity(new Tree(rand.getRandomCoordinates()));
         }
-
-        return gameMap;
+        rand.foo();
     }
 }

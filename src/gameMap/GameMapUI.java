@@ -55,8 +55,8 @@ public class GameMapUI extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for(int x = 0; x <= gameMap.getWidth(); x++) {
-            for(int y = 0; y <= gameMap.getHeight(); y++) {
+        for(int x = 0; x < gameMap.getWidth(); x++) {
+            for(int y = 0; y < gameMap.getHeight(); y++) {
                 g.setColor(Color.LIGHT_GRAY);
                 g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
                 g.setColor(Color.BLACK);
@@ -87,22 +87,4 @@ public class GameMapUI extends JPanel {
             }
         }
     }
-
-    /*
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        for(int i = 1; i <= gameMap.getWidth(); i++) {
-            for(int j = 1; j <= gameMap.getHeight(); j++) {
-                Coordinates currentCoords = new Coordinates(j, i);
-                if(gameMapEntity.containsKey(currentCoords)) {
-                    Entity currentEntity = gameMapEntity.get(currentCoords);
-                    g.drawString(currentEntity.toString(), j * 25, i * 25);
-                } else {
-                    g.drawString(" .", j * 25, i * 25);
-                }
-            }
-        }
-    }
-
-     */
 }

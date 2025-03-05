@@ -90,6 +90,14 @@ public abstract class Creature extends Entity {
 
     }
 
+    public void starve(int value) {
+        this.hunger -= value;
+    }
+
+    public void starving() {
+        this.health -= 15;
+    }
+
     public void makeRandomMove(GameMap map, PathFinder pathFinder) {
         Random rand = new Random();
 

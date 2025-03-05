@@ -14,7 +14,6 @@ public abstract class Entity {
     public Entity(String display) {
         this.id = Randomizer.setRandomId();
         this.display = display;
-        this.coordinates = Randomizer.setRandomCoordinates();
         this.path = null;
     }
 

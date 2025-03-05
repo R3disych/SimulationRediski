@@ -36,7 +36,7 @@ public class Herbivore extends Creature {
     }
 
     public void makeMove(GameMap gameMap, PathFinder pathFinder) {
-        while(isTurnable()) { //еще надо проверить на isDead() тут или в статическом методе makeTurn()
+        while(isTurnable()) {
             Optional<Grass> nearestGrass = findNearestGrass(gameMap);
             if (nearestGrass.isPresent()) {
                 Grass grass = nearestGrass.get();
@@ -52,6 +52,10 @@ public class Herbivore extends Creature {
             } else {
                 this.makeRandomMove(gameMap, pathFinder);
                 this.spendTurn();
+                this.starve(10);
+                if(this.getHunger() <= 0) {
+                    this.starving();
+                }
             }
         }
     }

@@ -37,9 +37,6 @@ public class Predator extends Creature {
 
     public void attack(Herbivore herbivore) {
         herbivore.takeDamage(this.getAttackDamage());
-        if(herbivore.isDead()) {
-            herbivore.die();
-        }
     }
 
     public void eat(Herbivore herbivore) {
@@ -48,7 +45,7 @@ public class Predator extends Creature {
     }
 
     public void makeMove(GameMap gameMap, PathFinder pathFinder) {
-        while(isTurnable()) { //еще надо проверить на isDead() тут или в статическом методе makeTurn()
+        while(isTurnable()) {
             Optional<Herbivore> nearestHerbivore = findNearestHerbivore(gameMap);
             if (nearestHerbivore.isPresent()) {
                 Herbivore herbivore = nearestHerbivore.get();
@@ -67,6 +64,10 @@ public class Predator extends Creature {
             } else {
                 this.makeRandomMove(gameMap, pathFinder);
                 this.spendTurn();
+                this.starve(10);
+                if(this.getHunger() <= 0) {
+                    this.starving();
+                }
             }
         }
     }
