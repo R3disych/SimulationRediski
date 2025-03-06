@@ -1,15 +1,12 @@
-package elements.Animals;
+package elements.animals;
 
 import elements.Entity;
 import gameMap.GameMap;
-import java.util.List;
+
 import java.util.Random;
 
 import util.Coordinates;
-import util.MoveRequest;
 import util.PathFinder;
-
-import java.util.Random;
 
 public abstract class Creature extends Entity {
     private int health;
@@ -18,6 +15,9 @@ public abstract class Creature extends Entity {
     private final int maxHunger;
     private boolean isDead;
     private int turns;
+    private int initiative;
+
+    private Random rand = new Random();
 
     public Creature(String display, int maxHp, int maxHunger) {
         super(display);
@@ -27,6 +27,14 @@ public abstract class Creature extends Entity {
         this.hunger = maxHunger;
         this.isDead = false;
         this.turns = 3;
+    }
+
+    public void reinitInitiative() {
+        this.initiative = rand.nextInt(100);
+    }
+
+    public int getInitiative() {
+        return initiative;
     }
 
     public int getHealth() {
@@ -58,7 +66,7 @@ public abstract class Creature extends Entity {
     }
 
     public boolean isTurnable() {
-        return this.turns > 0;
+        return this.turns > 0 && !this.isDead();
     }
 
     public void spendTurn() {
@@ -66,7 +74,7 @@ public abstract class Creature extends Entity {
     }
 
     public void restoreTurns() {
-        this.turns = 5;
+        this.turns = 3;
     }
 
     @Override
@@ -96,27 +104,6 @@ public abstract class Creature extends Entity {
 
     public void starving() {
         this.health -= 15;
-    }
-
-    public void makeRandomMove(GameMap map, PathFinder pathFinder) {
-        Random rand = new Random();
-
-        Coordinates currentCoords = this.getCoordinates();
-        int currX = currentCoords.getWidth();
-        int currY = currentCoords.getHeight();
-
-        int[] dx = {0, 0, -1, 1, -1, -1, 1, 1};
-        int[] dy = {-1, 1, 0, 0, -1, 1, -1, 1};
-        int newX = currX + dx[rand.nextInt(dx.length)];
-        int newY = currY + dy[rand.nextInt(dy.length)];
-
-        Coordinates newCoordinates = new Coordinates(newX, newY);
-
-        if (pathFinder.isValid(newCoordinates) && pathFinder.isWalkable(newCoordinates)) {
-            map.moveEntity(this, newCoordinates);
-        } else {
-            makeRandomMove(map, pathFinder);
-        }
     }
 
     public abstract void makeMove(GameMap gameMap, PathFinder pathFinder);

@@ -1,8 +1,9 @@
 package gameMap;
 
-import elements.Animals.Herbivore;
-import elements.Animals.Predator;
+import elements.animals.Herbivore;
+import elements.animals.Predator;
 import elements.Entity;
+import elements.animals.Footprints;
 import elements.staticObjects.Grass;
 import elements.staticObjects.Rock;
 import elements.staticObjects.Tree;
@@ -12,7 +13,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -39,6 +39,7 @@ public class GameMapUI extends JPanel {
             images.put("predator", loadImage("resources/predator.png"));
             images.put("tree", loadImage("resources/tree.png"));
             images.put("rock", loadImage("resources/rock.png"));
+            images.put("footprints", loadImage("resources/footprints.png"));
         } catch (IOException e) {
             System.out.println("Image loading failed" + e.getMessage());
         }
@@ -69,18 +70,21 @@ public class GameMapUI extends JPanel {
             BufferedImage image = null;
             if(entity instanceof Grass) {
                 image = images.get("grass");
-            } else if(entity instanceof Herbivore) {
+            } else if (entity instanceof Herbivore) {
                 image = images.get("herbivore");
-            } else if(entity instanceof Predator) {
+            } else if (entity instanceof Predator) {
                 image = images.get("predator");
-            } else if(entity instanceof Tree) {
+            } else if (entity instanceof Tree) {
                 image = images.get("tree");
-            } else if(entity instanceof Rock) {
+            } else if (entity instanceof Rock) {
                 image = images.get("rock");
+            } else if (entity instanceof Footprints) {
+                image = images.get("footprints");
             }
 
             if(image != null) {
                 g.drawImage(image, coordinates.getWidth() * cellSize, coordinates.getHeight() * cellSize, cellSize, cellSize, this);
+                g.drawString(String.valueOf(entity.getId()), coordinates.getWidth() * cellSize, coordinates.getHeight() * cellSize);
             } else {
                 g.setColor(Color.RED);
                 g.fillOval(coordinates.getWidth() * cellSize, coordinates.getHeight() * cellSize, cellSize, cellSize);

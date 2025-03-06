@@ -5,12 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import elements.Animals.Herbivore;
-import elements.Animals.Predator;
+import elements.animals.Herbivore;
+import elements.animals.Predator;
 import elements.Entity;
 import elements.staticObjects.Grass;
 import util.Coordinates;
-import util.Randomizer;
 
 public class GameMap {
     private int width;
@@ -87,6 +86,7 @@ public class GameMap {
 
         if(gameMapEntity.containsKey(oldCoordinates) && gameMapEntity.get(oldCoordinates).equals(entity)) {
             gameMapEntity.remove(oldCoordinates);
+
             entity.setCoordinates(newCoordinates);
             gameMapEntity.put(entity.getCoordinates(), entity);
         } else {
@@ -94,17 +94,16 @@ public class GameMap {
         }
     }
 
-    public List<Entity> getEntitiesNear(Coordinates coordinates) {
-        return getEntitiesNear(coordinates, 15);
+    public void reinitTurns() {
+        for (Entity entity : gameMapEntity.values()) {
+            entity.restoreTurns();
+        }
     }
 
-    public List<Entity> getEntitiesNear(Coordinates coordinates, int radius) {
-        List<Entity> entities = new ArrayList<>();
-        for(Entity entity : gameMapEntity.values()) {
-            if(coordinates.distanceTo(entity.getCoordinates()) <= radius) {
-                entities.add(entity);
-            }
-        }
-        return entities;
+    @Override
+    public String toString() {
+        return "GameMap{" +
+                ", gameMapEntity=" + gameMapEntity +
+                '}';
     }
 }

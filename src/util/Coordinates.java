@@ -44,4 +44,12 @@ public class Coordinates {
     public int hashCode() {
         return Objects.hash(new Object[]{this.width, this.height});
     }
+
+    @Override
+    public String toString() {
+        return "Coordinates{" +
+                "width=" + width +
+                ", height=" + height +
+                '}';
+    }
 }

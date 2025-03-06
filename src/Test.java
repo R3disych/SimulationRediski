@@ -1,17 +1,10 @@
-import actions.InitSimulation;
-import actions.MakeTurn;
-import elements.Animals.Herbivore;
-import elements.Entity;
+import elements.animals.Herbivore;
 import elements.staticObjects.Grass;
 import gameMap.GameMap;
-import gameMap.GameMapUI;
 import util.Coordinates;
 import util.PathFinder;
 
-import javax.swing.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public class Test {
     public static void main(String[] args) {

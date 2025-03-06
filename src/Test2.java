@@ -1,8 +1,6 @@
-import actions.InitSimulation;
-import actions.MakeTurn;
-import actions.RemoveDead;
-import elements.Animals.Herbivore;
-import elements.Animals.Predator;
+import actions.ClearMap;
+import elements.animals.Herbivore;
+import elements.animals.Predator;
 import elements.staticObjects.Grass;
 import gameMap.GameMap;
 import gameMap.GameMapUI;
@@ -10,7 +8,6 @@ import util.Coordinates;
 import util.PathFinder;
 
 import javax.swing.*;
-import java.util.List;
 
 public class Test2 {
     public static void main(String[] args) {
@@ -90,7 +87,7 @@ public class Test2 {
             predator.makeMove(gameMap, pathFinder);
 
             //System.out.println("Current coords of herbivore1: " + herbivore1.getCoordinates().getWidth() + ", " + herbivore1.getCoordinates().getHeight());
-            RemoveDead.removeDead(gameMap);
+            ClearMap.clearMap(gameMap);
             //MakeTurn.makeTurn(map, pathFinder);
         }
     }

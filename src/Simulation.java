@@ -1,7 +1,7 @@
 import actions.FillGameMap;
 import actions.InitSimulation;
 import actions.MakeTurn;
-import actions.RemoveDead;
+import actions.ClearMap;
 import gameMap.GameMap;
 
 import javax.swing.*;
@@ -10,7 +10,6 @@ import gameMap.GameMapUI;
 import util.PathFinder;
 import util.Randomizer;
 
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Simulation {
@@ -28,7 +27,6 @@ public class Simulation {
             GameMap gameMap = new GameMap();
             Randomizer randomizer = new Randomizer(gameMap);
             InitSimulation initSimulation = new InitSimulation();
-            PathFinder pathFinder = new PathFinder(gameMap);
             FillGameMap fillMap = new FillGameMap(gameMap, randomizer);
 
             GameMapUI gameMapUI = new GameMapUI(gameMap);
@@ -44,18 +42,18 @@ public class Simulation {
             initSimulation.initSim(gameMap, randomizer);
 
             AtomicInteger i = new AtomicInteger();
-            Timer timer = new Timer(1000, e -> {
+            Timer timer = new Timer(10, e -> {
                 synchronized (gameMap) {
-                    MakeTurn.makeTurn(gameMap, pathFinder);
-                    RemoveDead.removeDead(gameMap);//переставить
+                    ClearMap.clearMap(gameMap);
                     randomizer.foo();
                     fillMap.fillGameMap(i.get());
+                    gameMap.reinitTurns();
                     randomizer.foo();
+                    MakeTurn.makeTurn(gameMap, gameMapUI);
+                    System.out.println(gameMap);
                     i.getAndIncrement();
                     System.out.println(i.get());
                 }
-                gameMapUI.repaint();
-                //наверное сюда removeDead()
             });
             timer.start();
         });

@@ -24,6 +24,14 @@ public abstract class Entity {
         this.path = null;
     }
 
+    public boolean isDead() {
+        return false;
+    }
+
+    public void restoreTurns() {
+
+    }
+
     public int getId() {
         return id;
     }

@@ -1,7 +1,7 @@
 package actions;
 
-import elements.Animals.Herbivore;
-import elements.Animals.Predator;
+import elements.animals.Herbivore;
+import elements.animals.Predator;
 import elements.Entity;
 import elements.staticObjects.Grass;
 import gameMap.GameMap;
@@ -23,16 +23,22 @@ public class FillGameMap {
 
     public void fillGameMap(int i) {
         if(i % 5 == 0) {
-            if (gameMap.getNumOfGrass() < 7) {
-                gameMap.addEntity(new Grass(randomizer.getRandomCoordinates()));
+            if (gameMap.getNumOfGrass() < 10) {
+                for(int y = 0; gameMap.getNumOfGrass() < 10; y++) {
+                    gameMap.addEntity(new Grass(randomizer.getRandomCoordinates()));
+                }
             }
 
-            if (gameMap.getNumOfHerbivore() < 4) {
-                gameMap.addEntity(new Herbivore(randomizer.getRandomCoordinates()));
+            if (gameMap.getNumOfHerbivore() < 26) {
+                for(int y = 0; gameMap.getNumOfHerbivore() < 26; y++) {
+                    gameMap.addEntity(new Herbivore(randomizer.getRandomCoordinates()));
+                }
             }
 
-            if (gameMap.getNumOfPredator() < 2) {
-                gameMap.addEntity(new Predator(randomizer.getRandomCoordinates()));
+            if (gameMap.getNumOfPredator() < 13) {
+                for(int y = 0; gameMap.getNumOfPredator() < 13; y++) {
+                    gameMap.addEntity(new Predator(randomizer.getRandomCoordinates()));
+                }
             }
         }
     }

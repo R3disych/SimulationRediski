@@ -2,41 +2,70 @@ package actions;
 
 import elements.Entity;
 import gameMap.GameMap;
-import elements.Animals.Creature;
+import elements.animals.Creature;
 
 import java.util.*;
 
+import gameMap.GameMapUI;
 import util.Coordinates;
-import util.MoveRequest;
 import util.PathFinder;
 
 public class MakeTurn {
+    public static void makeTurn(GameMap gameMap, GameMapUI gameMapUI) {
+        while (true) {
 
-    public static void makeTurn(GameMap gameMap, PathFinder pathFinder) {
-        /*
-        Iterator<Map.Entry<Coordinates, Entity>> iterator = gameMap.getGameMapEntity().entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Coordinates, Entity> entry = iterator.next();
-            Entity entity = entry.getValue();
-            if (entity instanceof Creature) {
-                Creature creature = (Creature) entity;
+            PathFinder pathFinder = new PathFinder(gameMap);
+            Map<Coordinates, Entity> gameMapEntity = gameMap.getGameMapEntity();
+
+            List<Creature> entitiesToMove = new ArrayList<>();
+            for (Map.Entry<Coordinates, Entity> entry : gameMapEntity.entrySet()) {
+                Entity entity = entry.getValue();
+                if (entity instanceof Creature creature) {
+                    if (creature.isTurnable()) {
+                        creature.reinitInitiative();
+                        entitiesToMove.add(creature);
+                    }
+                }
+            }
+
+            if (entitiesToMove.isEmpty()) {
+                return;
+            }
+
+            entitiesToMove.sort(Comparator.comparingInt(Creature::getInitiative).reversed());
+            for (Creature creature : entitiesToMove) {
+                gameMapUI.repaint();
                 creature.makeMove(gameMap, pathFinder);
             }
         }
 
-         */
-        Map<Coordinates, Entity> gameMapCopy = new HashMap<>(gameMap.getGameMapEntity());
-        Map<Coordinates, Entity> gameMapOriginal = gameMap.getGameMapEntity();
-        for(Map.Entry<Coordinates, Entity> entry : gameMapCopy.entrySet()) {
-            Coordinates coordinates = entry.getKey();
-            Entity entity = entry.getValue();
-            if (entity instanceof Creature) {
-                Creature creature = (Creature) gameMapOriginal.get(coordinates);
-                if(creature != null && !creature.isDead()) {
-                    creature.makeMove(gameMap, pathFinder);
-                    creature.restoreTurns();
-                }
-            }
-        }
+//        Iterator<Map.Entry<Coordinates, Entity>> iterator = gameMapEntity.entrySet().iterator();
+//        while (iterator.hasNext()) {
+//            Map.Entry<Coordinates, Entity> entry = iterator.next();
+//            Coordinates coordinates = entry.getKey();
+//            Entity entity = entry.getValue();
+//            if (entity instanceof Creature creature) {
+//                if (!creature.isDead()) {
+//                    creature.makeMove(gameMap, pathFinder);
+//                }
+//            }
+//        }
+
+
+//        for (Map.Entry<Coordinates, Entity> entry : gameMapEntity.entrySet()) {
+//            Coordinates coordinates = entry.getKey();
+//            Entity entity = entry.getValue();
+//            if (entity instanceof Creature) {
+//                Creature creature = (Creature) gameMapEntity.get(coordinates);
+//                if (!creature.isDead()) {
+//                    creaturesToMove.add(creature);
+//                }
+//            }
+//        }
+//
+//        for (Creature creature : creaturesToMove) {
+//            creature.makeMove(gameMap, pathFinder);
+//            creature.restoreTurns();
+//        }
     }
 }

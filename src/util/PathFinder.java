@@ -1,14 +1,33 @@
 package util;
 
+import elements.Entity;
 import gameMap.GameMap;
 
 import java.util.*;
 
 public class PathFinder {
-    private final GameMap map;
+    private Map<Coordinates, Entity> gameMapEntity;
+    private int width;
+    private int height;
 
     public PathFinder(GameMap map) {
-        this.map = map;
+        this.gameMapEntity = map.getGameMapEntity();
+        this.width = map.getWidth();
+        this.height = map.getHeight();
+    }
+
+    public List<Entity> getEntitiesNear(Coordinates coordinates) {
+        return getEntitiesNear(coordinates, 15);
+    }
+
+    public List<Entity> getEntitiesNear(Coordinates coordinates, int radius) {
+        List<Entity> entities = new ArrayList<>();
+        for(Entity entity : gameMapEntity.values()) {
+            if(coordinates.distanceTo(entity.getCoordinates()) <= radius) {
+                entities.add(entity);
+            }
+        }
+        return entities;
     }
 
     public List<Coordinates> findPath(Coordinates start, Coordinates target) {
@@ -102,14 +121,14 @@ public class PathFinder {
     public boolean isValid(Coordinates coordinates) {
         int x = coordinates.getWidth();
         int y = coordinates.getHeight();
-        return x >= 0 && y >= 0 && x < map.getWidth() && y < map.getHeight();
+        return x >= 0 && y >= 0 && x < width && y < height;
     }
 
     public boolean isWalkable(Coordinates coordinates) {
-        if(!map.getGameMapEntity().containsKey(coordinates)) {
+        if(!gameMapEntity.containsKey(coordinates)) {
             return true;
         }
-        return (!(map.getGameMapEntity().get(coordinates).isObstacle()));
+        return (!(gameMapEntity.get(coordinates).isObstacle()));
     }
 
     public int heuristicFunction(Coordinates start, Coordinates target) {
