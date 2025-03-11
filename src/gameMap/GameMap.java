@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import elements.Locateable;
+import elements.Moveable;
 import elements.animals.Herbivore;
 import elements.animals.Predator;
 import elements.Entity;
@@ -12,34 +14,39 @@ import elements.staticObjects.Grass;
 import util.Coordinates;
 
 public class GameMap {
-    private int width;
-    private int height;
-    private Map<Coordinates, Entity> gameMapEntity;
+    private static int width ;
+    private static int height;
+    private static Map<Coordinates, Locateable> gameMapEntity;
 
-    public GameMap() {
-        this.width = 40;
-        this.height = 22;
-        gameMapEntity = new HashMap<>();
+    private GameMap(int width, int height) {
+        GameMap.width = width;
+        GameMap.height = height;
+        GameMap.gameMapEntity = new HashMap<>();
     }
 
-    public int getWidth() {
+    public static GameMap init(int width, int height) {
+        return new GameMap(width, height);
+    }
+
+    public static int getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public static int getHeight() {
         return height;
     }
 
-    public Map<Coordinates, Entity> getGameMapEntity() {
+    public Map<Coordinates, Locateable> getGameMapEntity() {
+        //return new HashMap<>(gameMapEntity);
         return gameMapEntity;
     }
 
     //сделать один метод, который будет принимать параметр Grass/Herbivore/Predator
     public int getNumOfGrass() {
         int count = 0;
-        List<Entity> entityList = getEntityList();
-        for(Entity e : entityList) {
-            if(e instanceof Grass) {
+        List<Locateable> entityList = getEntityList();
+        for(Locateable l : entityList) {
+            if(l instanceof Grass) {
                 count++;
             }
         }
@@ -48,9 +55,9 @@ public class GameMap {
 
     public int getNumOfHerbivore() {
         int count = 0;
-        List<Entity> entityList = getEntityList();
-        for(Entity e : entityList) {
-            if(e instanceof Herbivore) {
+        List<Locateable> entityList = getEntityList();
+        for(Locateable l : entityList) {
+            if(l instanceof Herbivore) {
                 count++;
             }
         }
@@ -59,51 +66,57 @@ public class GameMap {
 
     public int getNumOfPredator() {
         int count = 0;
-        List<Entity> entityList = getEntityList();
-        for(Entity e : entityList) {
-            if(e instanceof Predator) {
+        List<Locateable> entityList = getEntityList();
+        for(Locateable l : entityList) {
+            if(l instanceof Predator) {
                 count++;
             }
         }
         return count;
     }
 
-    public List<Entity> getEntityList() {
-        List<Entity> entityList = new ArrayList<>();
-        for(Map.Entry<Coordinates, Entity> entry : gameMapEntity.entrySet()) {
-            Entity entity = entry.getValue();
-            entityList.add(entity);
+    public List<Locateable> getEntityList() {
+        return new ArrayList<>(gameMapEntity.values());
+    }
+
+    public boolean addEntity(Entity entity) {
+        if(!gameMapEntity.containsKey(entity.getCoordinates())) {
+            gameMapEntity.put(entity.getCoordinates(), entity);
+            return true;
         }
-        return entityList;
+        return false;
     }
 
-    public void addEntity(Entity entity) {
-        gameMapEntity.put(entity.getCoordinates(), entity);
-    }
+    public void moveEntity(Moveable moveable, Coordinates newCoordinates) {
+        Coordinates oldCoordinates = moveable.getCoordinates();
 
-    public void moveEntity(Entity entity, Coordinates newCoordinates) {
-        Coordinates oldCoordinates = entity.getCoordinates();
-
-        if(gameMapEntity.containsKey(oldCoordinates) && gameMapEntity.get(oldCoordinates).equals(entity)) {
+        if(gameMapEntity.containsKey(oldCoordinates) && gameMapEntity.get(oldCoordinates).equals(moveable)) {
             gameMapEntity.remove(oldCoordinates);
 
-            entity.setCoordinates(newCoordinates);
-            gameMapEntity.put(entity.getCoordinates(), entity);
+            gameMapEntity.put(newCoordinates, moveable);
         } else {
             System.out.println("Ошибка: Entity не найдена на карте в ожидаемой позиции");
         }
     }
 
-    public void reinitTurns() {
-        for (Entity entity : gameMapEntity.values()) {
-            entity.restoreTurns();
-        }
+    public static boolean isAccessibleCoordinate(Coordinates coordinates) {
+        int x = coordinates.getWidth();
+        int y = coordinates.getHeight();
+        return x >= 0 && y >= 0 && x < GameMap.getWidth() && y < GameMap.getHeight();
     }
 
-    @Override
-    public String toString() {
-        return "GameMap{" +
-                ", gameMapEntity=" + gameMapEntity +
-                '}';
+    public static boolean isWalkable(Coordinates coordinates) {
+        if(!gameMapEntity.containsKey(coordinates)) {
+            return true;
+        }
+        return (!(gameMapEntity.get(coordinates).isObstacle()));
     }
+
+
+//    @Override
+//    public String toString() {
+//        return "GameMap{" +
+//                ", gameMapEntity=" + gameMapEntity +
+//                '}';
+//    }
 }

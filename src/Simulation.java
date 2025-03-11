@@ -1,13 +1,7 @@
-import actions.FillGameMap;
-import actions.InitSimulation;
-import actions.MakeTurn;
-import actions.ClearMap;
 import gameMap.GameMap;
-
+import actions.Action;
 import javax.swing.*;
-
 import gameMap.GameMapUI;
-import util.PathFinder;
 import util.Randomizer;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,10 +18,9 @@ public class Simulation {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            GameMap gameMap = new GameMap();
+            GameMap gameMap = GameMap.init(40, 22);
             Randomizer randomizer = new Randomizer(gameMap);
-            InitSimulation initSimulation = new InitSimulation();
-            FillGameMap fillMap = new FillGameMap(gameMap, randomizer);
+            Action action = new Action(gameMap, randomizer);
 
             GameMapUI gameMapUI = new GameMapUI(gameMap);
 
@@ -38,19 +31,18 @@ public class Simulation {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
 
-            randomizer.foo();
-            initSimulation.initSim(gameMap, randomizer);
+            randomizer.reinitializeFreeCells();
+            action.initSim();
 
             AtomicInteger i = new AtomicInteger();
-            Timer timer = new Timer(10, e -> {
+            Timer timer = new Timer(1000, e -> {
                 synchronized (gameMap) {
-                    ClearMap.clearMap(gameMap);
-                    randomizer.foo();
-                    fillMap.fillGameMap(i.get());
-                    gameMap.reinitTurns();
-                    randomizer.foo();
-                    MakeTurn.makeTurn(gameMap, gameMapUI);
-                    System.out.println(gameMap);
+                    action.clearMap();
+                    randomizer.reinitializeFreeCells();
+                    action.fillGameMap(i.getAndIncrement());
+                    randomizer.reinitializeFreeCells();
+                    action.makeTurn();
+                    gameMapUI.repaint();
                     i.getAndIncrement();
                     System.out.println(i.get());
                 }

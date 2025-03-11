@@ -1,5 +1,6 @@
 package elements.animals;
 
+import elements.Alive;
 import elements.Entity;
 import gameMap.GameMap;
 
@@ -11,69 +12,47 @@ import util.Coordinates;
 import util.PathFinder;
 
 public class Predator extends Creature {
-    private final int attackDamage = 25;
+    private static final int MAX_HP = 75;
+    private static final int MAX_HUNGER = 50;
+    private static final int MAX_STAMINA = 3;
+    private static final int DAMAGE = 25;
 
     public Predator() {
-        super("P", 100, 50);
+        super("P");
     }
 
     public Predator(Coordinates coordinates) {
-        super("P", 100, 50);
+        super("P");
         this.setCoordinates(coordinates);
     }
 
-    public int getAttackDamage() {
-        return this.attackDamage;
+    @Override
+    public int getMaxHp() {
+        return MAX_HP;
     }
 
-    public Optional<Herbivore> findNearestHerbivore(PathFinder pathFinder) {
-        List<Entity> nearEntities = pathFinder.getEntitiesNear(this.getCoordinates(), 25);
-        return nearEntities.stream()
-                .filter(entity -> entity instanceof Herbivore)
-                .map(entity -> (Herbivore) entity)
-                .min(Comparator.comparingDouble(herbivore ->
-                        this.getCoordinates().distanceTo(herbivore.getCoordinates())));
+    @Override
+    public int getNutritionalValue() {
+        return 50;
     }
 
-    public void attack(Herbivore herbivore) {
-        herbivore.takeDamage(this.getAttackDamage());
+    @Override
+    public int getMaxHunger() {
+        return MAX_HUNGER;
     }
 
-    public void eat(Herbivore herbivore) {
-        this.setHealth(this.getHealth() + herbivore.getHealth() / 2);
-        this.setHunger(this.getHunger() + herbivore.getHealth());
+    @Override
+    public int getMaxStamina() {
+        return MAX_STAMINA;
     }
 
-    public void makeMove(GameMap gameMap, PathFinder pathFinder) {
-        Optional<Herbivore> nearestHerbivore = findNearestHerbivore(pathFinder);
-        if (nearestHerbivore.isPresent()) {
-            Herbivore herbivore = nearestHerbivore.get();
-            if (this.getCoordinates().distanceTo(herbivore.getCoordinates()) <= 1 && !herbivore.isDead()) {
-                this.attack(herbivore);
-                this.spendTurn();
-                if (this.getCoordinates().distanceTo(herbivore.getCoordinates()) <= 1 && herbivore.isDead()) {
-                    this.eat(herbivore);
-                    this.spendTurn();
-                }
-            } else {
-                List<Coordinates> path = pathFinder.findPath(this.getCoordinates(), herbivore.getCoordinates());
-                Coordinates newCoordinates = path.get(1);
-                if (gameMap.getGameMapEntity().containsKey(newCoordinates)
-                        && gameMap.getGameMapEntity().get(newCoordinates).isObstacle()
-                        && !gameMap.getGameMapEntity().get(newCoordinates).isDead()) {
-                    spendTurn();
-                    return;
-                }
-                gameMap.moveEntity(this, newCoordinates);
-                this.spendTurn();
-            }
+    @Override
+    public int getDamage() {
+        return DAMAGE;
+    }
 
-        } else {
-            spendTurn();
-        }
-        this.starve(10);
-        if (this.getHunger() <= 0) {
-            this.starving();
-        }
+    @Override
+    public Class<? extends Alive> getVictimType() {
+        return Herbivore.class;
     }
 }

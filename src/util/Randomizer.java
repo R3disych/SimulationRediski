@@ -1,6 +1,6 @@
 package util;
 
-import elements.Entity;
+import elements.Locateable;
 import gameMap.GameMap;
 
 import java.util.*;
@@ -24,15 +24,15 @@ public class Randomizer {
         return idGenerator.getAndIncrement();
     }
 
-    public void foo() {
-        int width = gameMap.getWidth();
-        int height = gameMap.getHeight();
+    public void reinitializeFreeCells() {
+        int width = GameMap.getWidth();
+        int height = GameMap.getHeight();
         int size = width * height;
         List<Integer> numList = new ArrayList<>();
         for (int i = 0; i <= size; i++) {
             numList.add(i);
         }
-        Map<Coordinates, Entity> gameMapEntity = gameMap.getGameMapEntity();
+        Map<Coordinates, Locateable> gameMapEntity = gameMap.getGameMapEntity();
         numList.sort((o1, o2) -> {
             if (gameMapEntity.containsKey(generateCoordinates(o1, width)) &&
                     !gameMapEntity.containsKey(generateCoordinates(o2, width))) {
@@ -58,32 +58,8 @@ public class Randomizer {
 
     public Coordinates getRandomCoordinates() {
         if(randomFreeSlotsIterator.hasNext()) {
-            return generateCoordinates(randomFreeSlotsIterator.next(), gameMap.getWidth());
+            return generateCoordinates(randomFreeSlotsIterator.next(), GameMap.getWidth());
         }
         throw new IllegalStateException("Unexpected. Free slots out");
-    }
-
-    /*
-    public static Coordinates setRandomCoordinates() {
-        for(int i = 0; i < maxAttempts; i++) {
-            int x = random.nextInt(40);
-            int y = random.nextInt(22);
-            Coordinates newCoords = new Coordinates(x, y);
-            if(!coordsSet.contains(newCoords)) {
-                coordsSet.add(new Coordinates(x, y));
-                return newCoords;
-            } else {
-                setRandomCoordinates();
-            }
-        }
-        return null; //лучше так не делать
-    }
-     */
-    public static void addCoordinates(Coordinates coords) {
-        coordsSet.add(coords);
-    }
-
-    public static void removeCoordinates(Coordinates coords) {
-        coordsSet.remove(coords);
     }
 }

@@ -1,5 +1,6 @@
 package elements.animals;
 
+import elements.Alive;
 import elements.Entity;
 import gameMap.GameMap;
 import elements.staticObjects.Grass;
@@ -11,54 +12,48 @@ import util.Coordinates;
 import util.PathFinder;
 
 public class Herbivore extends Creature {
+    private static final int MAX_HP = 75;
+    private static final int MAX_HUNGER = 100;
+    private static final int MAX_STAMINA = 3;
+    private static final int DAMAGE = 1;
+
     public Herbivore() {
-        super("H", 75, 75);
+        super("H");
     }
 
     public Herbivore(Coordinates coordinates) {
-        super("H", 75, 75);
+        super("H");
         this.setCoordinates(coordinates);
     }
 
-    public Optional<Grass> findNearestGrass(PathFinder pathFinder) {
-        List<Entity> nearEntities = pathFinder.getEntitiesNear(this.getCoordinates(), 20);
-        return nearEntities.stream()
-                .filter(entity -> entity instanceof Grass)
-                .map(entity -> (Grass) entity)
-                .min(Comparator.comparingDouble(grass ->
-                        this.getCoordinates().distanceTo(grass.getCoordinates())));
+    @Override
+    public int getMaxHp() {
+        return MAX_HP;
     }
 
-    public void eat(Grass grass) {
-        super.eat(grass.getNutritionValue());
+    @Override
+    public int getNutritionalValue() {
+        return getCurrentHp() / 2;
     }
 
-    public void makeMove(GameMap gameMap, PathFinder pathFinder) {
-        Optional<Grass> nearestGrass = findNearestGrass(pathFinder);
-        if (nearestGrass.isPresent()) {
-            Grass grass = nearestGrass.get();
-            if (this.getCoordinates().distanceTo(grass.getCoordinates()) <= 1 && !grass.isDead()) {
-                this.eat(grass);
-                grass.die();
-                this.spendTurn();
-            } else {
-                List<Coordinates> path = pathFinder.findPath(this.getCoordinates(), grass.getCoordinates());
-                Coordinates newCoordinates = path.get(1);
-                if (gameMap.getGameMapEntity().containsKey(newCoordinates)
-                        && gameMap.getGameMapEntity().get(newCoordinates).isObstacle()
-                        && !gameMap.getGameMapEntity().get(newCoordinates).isDead()) {
-                    spendTurn();
-                    return;
-                }
-                gameMap.moveEntity(this, newCoordinates);
-                this.spendTurn();
-            }
-        } else {
-            spendTurn();
-        }
-        this.starve(10);
-        if (this.getHunger() <= 0) {
-            this.starving();
-        }
+    @Override
+    public int getMaxHunger() {
+        return MAX_HUNGER;
     }
+
+    @Override
+    public int getMaxStamina() {
+        return MAX_STAMINA;
+    }
+
+    @Override
+    public int getDamage() {
+        return DAMAGE;
+    }
+
+    @Override
+    public Class<? extends Alive> getVictimType() {
+        return Grass.class;
+    }
+
 }

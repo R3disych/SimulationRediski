@@ -1,9 +1,9 @@
 package gameMap;
 
+import elements.Alive;
+import elements.Locateable;
 import elements.animals.Herbivore;
 import elements.animals.Predator;
-import elements.Entity;
-import elements.animals.Footprints;
 import elements.staticObjects.Grass;
 import elements.staticObjects.Rock;
 import elements.staticObjects.Tree;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class GameMapUI extends JPanel {
     private GameMap gameMap;
-    private Map<Coordinates, Entity> gameMapEntity;
+    private Map<Coordinates, Locateable> gameMapEntity;
     private HashMap<String, BufferedImage> images = new HashMap<>();
     private final int cellSize = 45;
 
@@ -28,18 +28,16 @@ public class GameMapUI extends JPanel {
         this.gameMap = gameMap;
         this.gameMapEntity = gameMap.getGameMapEntity();
         loadImages();
-        setPreferredSize(new Dimension(1175, 725));
+        setPreferredSize(new Dimension(1920, 1080));
     }
 
     private void loadImages() {
-
         try{
             images.put("grass", loadImage("resources/grass.png"));
             images.put("herbivore", loadImage("resources/herbivore.png"));
             images.put("predator", loadImage("resources/predator.png"));
             images.put("tree", loadImage("resources/tree.png"));
             images.put("rock", loadImage("resources/rock.png"));
-            images.put("footprints", loadImage("resources/footprints.png"));
         } catch (IOException e) {
             System.out.println("Image loading failed" + e.getMessage());
         }
@@ -56,8 +54,8 @@ public class GameMapUI extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for(int x = 0; x < gameMap.getWidth(); x++) {
-            for(int y = 0; y < gameMap.getHeight(); y++) {
+        for(int x = 0; x < GameMap.getWidth(); x++) {
+            for(int y = 0; y < GameMap.getHeight(); y++) {
                 g.setColor(Color.LIGHT_GRAY);
                 g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
                 g.setColor(Color.BLACK);
@@ -66,20 +64,33 @@ public class GameMapUI extends JPanel {
         }
 
         for(Coordinates coordinates : gameMapEntity.keySet()) {
-            Entity entity = gameMapEntity.get(coordinates);
+            Locateable entity = gameMapEntity.get(coordinates);
             BufferedImage image = null;
             if(entity instanceof Grass) {
-                image = images.get("grass");
+                Alive aliveEntity = (Alive) entity;
+                if (aliveEntity.isDead()) {
+                    image = images.get("bittenGrass");
+                } else {
+                    image = images.get("grass");
+                }
             } else if (entity instanceof Herbivore) {
-                image = images.get("herbivore");
+                Alive aliveEntity = (Alive) entity;
+                if (aliveEntity.isDead()) {
+                    image = images.get("deadHerbivore");
+                } else {
+                    image = images.get("herbivore");
+                }
             } else if (entity instanceof Predator) {
-                image = images.get("predator");
+                Alive aliveEntity = (Alive) entity;
+                if (aliveEntity.isDead()) {
+                    image = images.get("deadPredator");
+                } else {
+                    image = images.get("predator");
+                }
             } else if (entity instanceof Tree) {
                 image = images.get("tree");
             } else if (entity instanceof Rock) {
                 image = images.get("rock");
-            } else if (entity instanceof Footprints) {
-                image = images.get("footprints");
             }
 
             if(image != null) {

@@ -1,80 +1,70 @@
 package elements.animals;
 
+import elements.Alive;
 import elements.Entity;
+import elements.Moveable;
 import gameMap.GameMap;
 
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.Random;
 
 import util.Coordinates;
 import util.PathFinder;
 
-public abstract class Creature extends Entity {
-    private int health;
+public abstract class Creature extends Entity implements Moveable, Alive {
+    private int Hp;
     private int hunger;
-    private final int maxHp;
-    private final int maxHunger;
-    private boolean isDead;
-    private int turns;
+    private int stamina;
     private int initiative;
 
     private Random rand = new Random();
 
-    public Creature(String display, int maxHp, int maxHunger) {
+    public Creature(String display) {
         super(display);
-        this.maxHp = maxHp;
-        this.maxHunger = maxHunger;
-        this.health = maxHp;
-        this.hunger = maxHunger;
-        this.isDead = false;
-        this.turns = 3;
+        this.Hp = getMaxHp();
+        this.hunger = getMaxHunger();
+        restoreStamina();
     }
 
+    @Override
     public void reinitInitiative() {
         this.initiative = rand.nextInt(100);
     }
 
+    @Override
     public int getInitiative() {
         return initiative;
     }
 
-    public int getHealth() {
-        return this.health;
+    @Override
+    public int getCurrentHp() {
+        return Hp;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
+    @Override
+    public int getCurrentHunger() {
+        return hunger;
     }
 
-    public int getHunger() {
-        return this.hunger;
+    @Override
+    public int getStamina() {
+        return stamina;
     }
 
-    public void setHunger(int hunger) {
-        this.hunger = hunger;
+    @Override
+    public void restoreStamina() {
+        stamina = getMaxStamina();
     }
 
-    public boolean isDead() {
-        return this.health <= 0;
+    @Override
+    public void spendStamina() {
+        stamina--;
     }
 
-    public void die() {
-        this.isDead = true;
-    }
-
-    public int getTurns() {
-        return this.turns;
-    }
-
-    public boolean isTurnable() {
-        return this.turns > 0 && !this.isDead();
-    }
-
-    public void spendTurn() {
-        this.turns--;
-    }
-
-    public void restoreTurns() {
-        this.turns = 3;
+    @Override
+    public void step(GameMap gameMap, Coordinates target) {
+        Moveable.super.step(gameMap, target);
     }
 
     @Override
@@ -82,29 +72,74 @@ public abstract class Creature extends Entity {
         return true;
     }
 
-    public void takeDamage(int damage) {
-        this.health -= damage;
-        if (this.health < 0) {
-            this.health = 0;
+    @Override
+    public void eat(int nutritionValue) {
+        hunger += nutritionValue;
+        if (hunger > getMaxHunger()) {
+            hunger = getMaxHunger();
         }
-
     }
 
-    public void eat(int food) {
-        this.hunger += food;
-        if (this.hunger > this.maxHunger) {
-            this.hunger = this.maxHunger;
-        }
-
+    @Override
+    public boolean decraseHunger() {
+        this.hunger -= 15;
+        return hunger <= 0;
     }
 
-    public void starve(int value) {
-        this.hunger -= value;
+    @Override
+    public boolean decreaseHp(int damage) {
+        this.Hp -= damage;
+        return Hp <= 0;
     }
 
+    @Override
+    public boolean isDead() {
+        return getCurrentHp() <= 0;
+    }
+
+    @Override
     public void starving() {
-        this.health -= 15;
+        this.Hp -= 15;
     }
 
-    public abstract void makeMove(GameMap gameMap, PathFinder pathFinder);
+    public abstract Class<? extends Alive> getVictimType();
+
+    public Optional<Alive> findNearestVictim(PathFinder pathFinder) {
+        return pathFinder.getEntitiesNear(this.getCoordinates(), 20)
+                .stream()
+                .filter(entity -> entity.getClass().equals(getVictimType()))
+                .map(locateable -> (Alive) locateable)
+                .min(Comparator.comparingDouble(victim ->
+                        this.getCoordinates().distanceTo(victim.getCoordinates())));
+    }
+
+    @Override
+    public void move(GameMap gameMap, PathFinder pathFinder) {
+        Optional<Alive> nearestVictim = findNearestVictim(pathFinder);
+        if (nearestVictim.isPresent()) {
+            Alive victim = nearestVictim.get();
+            if (this.getCoordinates().distanceTo(victim.getCoordinates()) <= 1 && !victim.isDead()) {
+                this.eat(victim.getNutritionalValue());
+                boolean killed = victim.decreaseHp(getDamage());
+                if (killed) {
+                    step(gameMap, victim.getCoordinates());
+                }
+                spendStamina();
+                System.out.println("Я скушал кого-то");
+            } else {
+                makeMoveToVictim(gameMap, pathFinder, victim);
+                spendStamina();
+                System.out.println("Я походил к цели");
+            }
+        } else {
+            makeRandomStep(gameMap);
+            spendStamina();
+            System.out.println("Я случайно походил");
+        }
+        boolean hungry = decraseHunger();
+        if (hungry) {
+            starving();
+            System.out.println("Я получил урон от голодания");
+        }
+    }
 }

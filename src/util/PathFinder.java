@@ -1,28 +1,25 @@
 package util;
 
 import elements.Entity;
+import elements.Locateable;
 import gameMap.GameMap;
 
 import java.util.*;
 
 public class PathFinder {
-    private Map<Coordinates, Entity> gameMapEntity;
-    private int width;
-    private int height;
+    private Map<Coordinates, Locateable> gameMapEntity;
 
     public PathFinder(GameMap map) {
         this.gameMapEntity = map.getGameMapEntity();
-        this.width = map.getWidth();
-        this.height = map.getHeight();
     }
 
-    public List<Entity> getEntitiesNear(Coordinates coordinates) {
+    public List<? extends Locateable> getEntitiesNear(Coordinates coordinates) {
         return getEntitiesNear(coordinates, 15);
     }
 
-    public List<Entity> getEntitiesNear(Coordinates coordinates, int radius) {
-        List<Entity> entities = new ArrayList<>();
-        for(Entity entity : gameMapEntity.values()) {
+    public List<? extends Locateable> getEntitiesNear(Coordinates coordinates, int radius) {
+        List<Locateable> entities = new ArrayList<>();
+        for(Locateable entity : gameMapEntity.values()) {
             if(coordinates.distanceTo(entity.getCoordinates()) <= radius) {
                 entities.add(entity);
             }
@@ -110,25 +107,12 @@ public class PathFinder {
                 neighbors.add(newCoordinates);
             }
 
-            if(isValid(newCoordinates) && isWalkable(newCoordinates)) {
+            if(GameMap.isAccessibleCoordinate(newCoordinates) && GameMap.isWalkable(newCoordinates)) {
                 neighbors.add(newCoordinates);
             }
         }
 
         return neighbors;
-    }
-
-    public boolean isValid(Coordinates coordinates) {
-        int x = coordinates.getWidth();
-        int y = coordinates.getHeight();
-        return x >= 0 && y >= 0 && x < width && y < height;
-    }
-
-    public boolean isWalkable(Coordinates coordinates) {
-        if(!gameMapEntity.containsKey(coordinates)) {
-            return true;
-        }
-        return (!(gameMapEntity.get(coordinates).isObstacle()));
     }
 
     public int heuristicFunction(Coordinates start, Coordinates target) {

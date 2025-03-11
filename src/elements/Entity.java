@@ -5,7 +5,7 @@ import java.util.Objects;
 import util.Coordinates;
 import util.Randomizer;
 
-public abstract class Entity {
+public abstract class Entity implements Identifiable, Locateable {
     private final int id;
     private final String display;
     private Coordinates coordinates;
@@ -24,16 +24,13 @@ public abstract class Entity {
         this.path = null;
     }
 
-    public boolean isDead() {
-        return false;
+    @Override
+    public int getId() {
+        return id;
     }
 
     public void restoreTurns() {
 
-    }
-
-    public int getId() {
-        return id;
     }
 
     public Coordinates getCoordinates() {
