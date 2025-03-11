@@ -1,7 +1,8 @@
 package gameMap;
 
 import elements.Alive;
-import elements.Locateable;
+import elements.Locatable;
+import elements.animals.Creature;
 import elements.animals.Herbivore;
 import elements.animals.Predator;
 import elements.staticObjects.Grass;
@@ -20,13 +21,13 @@ import java.util.Map;
 
 public class GameMapUI extends JPanel {
     private GameMap gameMap;
-    private Map<Coordinates, Locateable> gameMapEntity;
+    private Map<Coordinates, Locatable> gameMapEntity;
     private HashMap<String, BufferedImage> images = new HashMap<>();
-    private final int cellSize = 45;
+    private final int CELL_SIZE = 45;
 
     public GameMapUI(GameMap gameMap) {
         this.gameMap = gameMap;
-        this.gameMapEntity = gameMap.getGameMapEntity();
+        this.gameMapEntity = gameMap.getGameMapLocatable();
         loadImages();
         setPreferredSize(new Dimension(1920, 1080));
     }
@@ -38,6 +39,9 @@ public class GameMapUI extends JPanel {
             images.put("predator", loadImage("resources/predator.png"));
             images.put("tree", loadImage("resources/tree.png"));
             images.put("rock", loadImage("resources/rock.png"));
+            images.put("bittenGrass", loadImage("resources/bittenGrass.png"));
+            images.put("deadHerbivore", loadImage("resources/deadHerbivore.png"));
+            images.put("deadPredator", loadImage("resources/deadPredator.png"));
         } catch (IOException e) {
             System.out.println("Image loading failed" + e.getMessage());
         }
@@ -54,17 +58,17 @@ public class GameMapUI extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for(int x = 0; x < GameMap.getWidth(); x++) {
-            for(int y = 0; y < GameMap.getHeight(); y++) {
+        for(int x = 0; x < GameMap.getRow(); x++) {
+            for(int y = 0; y < GameMap.getColumn(); y++) {
                 g.setColor(Color.LIGHT_GRAY);
-                g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                g.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 g.setColor(Color.BLACK);
-                g.drawRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                g.drawRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
         }
 
         for(Coordinates coordinates : gameMapEntity.keySet()) {
-            Locateable entity = gameMapEntity.get(coordinates);
+            Locatable entity = gameMapEntity.get(coordinates);
             BufferedImage image = null;
             if(entity instanceof Grass) {
                 Alive aliveEntity = (Alive) entity;
@@ -94,11 +98,27 @@ public class GameMapUI extends JPanel {
             }
 
             if(image != null) {
-                g.drawImage(image, coordinates.getWidth() * cellSize, coordinates.getHeight() * cellSize, cellSize, cellSize, this);
-                g.drawString(String.valueOf(entity.getId()), coordinates.getWidth() * cellSize, coordinates.getHeight() * cellSize);
+                g.drawImage(image, coordinates.getWidth() * CELL_SIZE, coordinates.getHeight() * CELL_SIZE, CELL_SIZE, CELL_SIZE, this);
+                g.drawString(String.valueOf(entity.getId()), coordinates.getWidth() * CELL_SIZE, coordinates.getHeight() * CELL_SIZE);
             } else {
                 g.setColor(Color.RED);
-                g.fillOval(coordinates.getWidth() * cellSize, coordinates.getHeight() * cellSize, cellSize, cellSize);
+                g.fillOval(coordinates.getWidth() * CELL_SIZE, coordinates.getHeight() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            }
+
+            if (entity instanceof Creature) {
+                Creature creature = (Creature) entity;
+                int x = coordinates.getWidth() * CELL_SIZE;
+                int y = coordinates.getHeight() * CELL_SIZE;
+
+                // Отображение HP
+                g.setColor(Color.BLACK);
+                g.drawString("HP: " + creature.getCurrentHp(), x + 5, y + 15);
+
+                // Отображение инициативы
+                g.drawString("Init: " + creature.getInitiative(), x + 5, y + 30);
+
+                // Отображение голода
+                g.drawString("Hunger: " + creature.getCurrentHunger(), x + 5, y + 40);
             }
         }
     }

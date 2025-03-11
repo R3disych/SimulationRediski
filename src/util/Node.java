@@ -1,8 +1,5 @@
 package util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Node {
     private Node parent;
     private final Coordinates coordinates;

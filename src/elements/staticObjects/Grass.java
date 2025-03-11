@@ -4,10 +4,9 @@ import elements.Alive;
 import elements.Entity;
 import util.Coordinates;
 
-import java.awt.*;
-
 public class Grass extends Entity implements Alive {
-    private final int NUTRITION_VALUE = 20;
+    private static final int NUTRITION_VALUE = 20;
+    private static final int MAX_HP = 1;
     private int Hp;
 
     public Grass() {
@@ -16,7 +15,7 @@ public class Grass extends Entity implements Alive {
 
     public Grass(Coordinates coordinates) {
         super("G", coordinates);
-        this.Hp = 1;
+        this.Hp = MAX_HP;
     }
 
     @Override
@@ -31,7 +30,7 @@ public class Grass extends Entity implements Alive {
 
     @Override
     public int getCurrentHp() {
-        return 0;
+        return Hp;
     }
 
     @Override
@@ -41,7 +40,8 @@ public class Grass extends Entity implements Alive {
 
     @Override
     public boolean decreaseHp(int damage) {
-        return false;
+        this.Hp -= damage;
+        return Hp <= 0;
     }
 
     @Override

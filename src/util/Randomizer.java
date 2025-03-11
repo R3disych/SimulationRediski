@@ -1,16 +1,12 @@
 package util;
 
-import elements.Locateable;
+import elements.Locatable;
 import gameMap.GameMap;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Randomizer {
-    private static final Random random = new Random();
-    static Set<Integer> idSet = new HashSet<>();
-    static Set<Coordinates> coordsSet = new HashSet<>(); //скорее всего это состояние должен хранить класс GameMap
-    private static final int maxAttempts = 1000;
     private GameMap gameMap;
     private Iterator<Integer> randomFreeSlotsIterator;
     private static AtomicInteger idGenerator = new AtomicInteger(0);
@@ -25,14 +21,14 @@ public class Randomizer {
     }
 
     public void reinitializeFreeCells() {
-        int width = GameMap.getWidth();
-        int height = GameMap.getHeight();
+        int width = GameMap.getRow() - 1;
+        int height = GameMap.getColumn() - 1;
         int size = width * height;
         List<Integer> numList = new ArrayList<>();
         for (int i = 0; i <= size; i++) {
             numList.add(i);
         }
-        Map<Coordinates, Locateable> gameMapEntity = gameMap.getGameMapEntity();
+        Map<Coordinates, Locatable> gameMapEntity = gameMap.getGameMapLocatable();
         numList.sort((o1, o2) -> {
             if (gameMapEntity.containsKey(generateCoordinates(o1, width)) &&
                     !gameMapEntity.containsKey(generateCoordinates(o2, width))) {
@@ -58,7 +54,7 @@ public class Randomizer {
 
     public Coordinates getRandomCoordinates() {
         if(randomFreeSlotsIterator.hasNext()) {
-            return generateCoordinates(randomFreeSlotsIterator.next(), GameMap.getWidth());
+            return generateCoordinates(randomFreeSlotsIterator.next(), GameMap.getRow());
         }
         throw new IllegalStateException("Unexpected. Free slots out");
     }

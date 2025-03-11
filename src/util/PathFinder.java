@@ -1,25 +1,24 @@
 package util;
 
-import elements.Entity;
-import elements.Locateable;
+import elements.Locatable;
 import gameMap.GameMap;
 
 import java.util.*;
 
 public class PathFinder {
-    private Map<Coordinates, Locateable> gameMapEntity;
+    private Map<Coordinates, Locatable> gameMapEntity;
 
     public PathFinder(GameMap map) {
-        this.gameMapEntity = map.getGameMapEntity();
+        this.gameMapEntity = map.getGameMapLocatable();
     }
 
-    public List<? extends Locateable> getEntitiesNear(Coordinates coordinates) {
+    public List<? extends Locatable> getEntitiesNear(Coordinates coordinates) {
         return getEntitiesNear(coordinates, 15);
     }
 
-    public List<? extends Locateable> getEntitiesNear(Coordinates coordinates, int radius) {
-        List<Locateable> entities = new ArrayList<>();
-        for(Locateable entity : gameMapEntity.values()) {
+    public List<? extends Locatable> getEntitiesNear(Coordinates coordinates, int radius) {
+        List<Locatable> entities = new ArrayList<>();
+        for(Locatable entity : gameMapEntity.values()) {
             if(coordinates.distanceTo(entity.getCoordinates()) <= radius) {
                 entities.add(entity);
             }
@@ -95,9 +94,9 @@ public class PathFinder {
         int x = current.getWidth();
         int y = current.getHeight();
 
-        int[] dx = {0, 0, -1, 1, -1, -1, 1, 1};
-        int[] dy = {-1, 1, 0, 0, -1, 1, -1, 1};
-        for(int i = 0; i < 8; i++) {
+        int[] dx = {0, 0, -1, 1};
+        int[] dy = {-1, 1, 0, 0};
+        for(int i = 0; i < 4; i++) {
             int newX = x + dx[i];
             int newY = y + dy[i];
 

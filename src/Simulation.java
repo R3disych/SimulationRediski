@@ -7,22 +7,12 @@ import util.Randomizer;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Simulation {
-    public int turnsCount;
-
-    /*
-    public void plusTurn() {
-        ++this.turnsCount;
-    }
-
-     */
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             GameMap gameMap = GameMap.init(40, 22);
             Randomizer randomizer = new Randomizer(gameMap);
-            Action action = new Action(gameMap, randomizer);
-
             GameMapUI gameMapUI = new GameMapUI(gameMap);
+            Action action = new Action(gameMap, randomizer, gameMapUI);
 
             JFrame frame = new JFrame("Simulation");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,19 +22,19 @@ public class Simulation {
             frame.setVisible(true);
 
             randomizer.reinitializeFreeCells();
-            action.initSim();
+            action.initSimulation();
 
-            AtomicInteger i = new AtomicInteger();
-            Timer timer = new Timer(1000, e -> {
+            AtomicInteger turn = new AtomicInteger();
+            Timer timer = new Timer(100, e -> {
                 synchronized (gameMap) {
                     action.clearMap();
                     randomizer.reinitializeFreeCells();
-                    action.fillGameMap(i.getAndIncrement());
+                    action.fillGameMap(turn.get());
                     randomizer.reinitializeFreeCells();
                     action.makeTurn();
                     gameMapUI.repaint();
-                    i.getAndIncrement();
-                    System.out.println(i.get());
+                    turn.getAndIncrement();
+                    System.out.println(turn.get());
                 }
             });
             timer.start();

@@ -2,7 +2,7 @@ package elements.animals;
 
 import elements.Alive;
 import elements.Entity;
-import elements.Moveable;
+import elements.Movable;
 import gameMap.GameMap;
 
 import java.util.Comparator;
@@ -12,7 +12,7 @@ import java.util.Random;
 import util.Coordinates;
 import util.PathFinder;
 
-public abstract class Creature extends Entity implements Moveable, Alive {
+public abstract class Creature extends Entity implements Movable, Alive {
     private int Hp;
     private int hunger;
     private int stamina;
@@ -29,7 +29,7 @@ public abstract class Creature extends Entity implements Moveable, Alive {
 
     @Override
     public void reinitInitiative() {
-        this.initiative = rand.nextInt(100);
+        this.initiative = rand.nextInt(100) + 10;
     }
 
     @Override
@@ -64,7 +64,7 @@ public abstract class Creature extends Entity implements Moveable, Alive {
 
     @Override
     public void step(GameMap gameMap, Coordinates target) {
-        Moveable.super.step(gameMap, target);
+        Movable.super.step(gameMap, target);
     }
 
     @Override
@@ -82,7 +82,7 @@ public abstract class Creature extends Entity implements Moveable, Alive {
 
     @Override
     public boolean decraseHunger() {
-        this.hunger -= 15;
+        this.hunger -= 5;
         return hunger <= 0;
     }
 
@@ -119,27 +119,22 @@ public abstract class Creature extends Entity implements Moveable, Alive {
         if (nearestVictim.isPresent()) {
             Alive victim = nearestVictim.get();
             if (this.getCoordinates().distanceTo(victim.getCoordinates()) <= 1 && !victim.isDead()) {
-                this.eat(victim.getNutritionalValue());
-                boolean killed = victim.decreaseHp(getDamage());
-                if (killed) {
-                    step(gameMap, victim.getCoordinates());
-                }
+                eat(victim.getNutritionalValue());
+                victim.decreaseHp(getDamage());
                 spendStamina();
-                System.out.println("Я скушал кого-то");
             } else {
                 makeMoveToVictim(gameMap, pathFinder, victim);
                 spendStamina();
-                System.out.println("Я походил к цели");
             }
         } else {
-            makeRandomStep(gameMap);
-            spendStamina();
-            System.out.println("Я случайно походил");
+            if (canMakeRandomStep(gameMap)) {
+                makeRandomStep(gameMap);
+                spendStamina();
+            }
         }
         boolean hungry = decraseHunger();
         if (hungry) {
             starving();
-            System.out.println("Я получил урон от голодания");
         }
     }
 }

@@ -1,18 +1,12 @@
 package elements.animals;
 
 import elements.Alive;
-import elements.Entity;
-import gameMap.GameMap;
 import elements.staticObjects.Grass;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
 import util.Coordinates;
-import util.PathFinder;
+
 
 public class Herbivore extends Creature {
-    private static final int MAX_HP = 75;
+    private static final int MAX_HP = 50;
     private static final int MAX_HUNGER = 100;
     private static final int MAX_STAMINA = 3;
     private static final int DAMAGE = 1;

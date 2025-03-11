@@ -5,7 +5,7 @@ import java.util.Objects;
 import util.Coordinates;
 import util.Randomizer;
 
-public abstract class Entity implements Identifiable, Locateable {
+public abstract class Entity implements Identifiable, Locatable {
     private final int id;
     private final String display;
     private Coordinates coordinates;

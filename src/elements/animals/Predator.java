@@ -1,15 +1,8 @@
 package elements.animals;
 
 import elements.Alive;
-import elements.Entity;
-import gameMap.GameMap;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-
 import util.Coordinates;
-import util.PathFinder;
+
 
 public class Predator extends Creature {
     private static final int MAX_HP = 75;

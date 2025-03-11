@@ -1,6 +1,6 @@
 package elements;
 
-public interface Alive extends Locateable {
+public interface Alive extends Locatable {
     int getCurrentHunger();
     int getMaxHunger();
     int getCurrentHp();
