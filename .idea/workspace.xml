@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90bca74d-c45c-4734-8d01-5cb523e450e5" name="Changes" comment="-YEAH BUDDY">
+    <list default="true" id="90bca74d-c45c-4734-8d01-5cb523e450e5" name="Changes" comment="-remove the magic numbers">
+      <change afterPath="$PROJECT_DIR$/src/Test.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Simulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/actions/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/Action.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/animals/Creature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/animals/Creature.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/elements/Alive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/Alive.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/elements/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/elements/animals/Herbivore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/animals/Herbivore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/elements/animals/Predator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/animals/Predator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/elements/staticObjects/Grass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/staticObjects/Grass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gameMap/GameMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gameMap/GameMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gameMap/GameMapUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gameMap/GameMapUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/Coordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/Coordinates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/PathFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/PathFinder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,7 +149,7 @@
       <workItem from="1741615713919" duration="19000" />
       <workItem from="1741669731094" duration="13205000" />
       <workItem from="1741683157279" duration="16435000" />
-      <workItem from="1741756838056" duration="1740000" />
+      <workItem from="1741756838056" duration="5416000" />
     </task>
     <task id="LOCAL-00001" summary="-another try to resolve all">
       <option name="closed" value="true" />
@@ -182,7 +191,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741703519110</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="-remove the magic numbers">
+      <option name="closed" value="true" />
+      <created>1741758902236</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1741758902236</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,7 +222,8 @@
     <MESSAGE value="-fuck" />
     <MESSAGE value="-a lot of fixes" />
     <MESSAGE value="-YEAH BUDDY" />
-    <option name="LAST_COMMIT_MESSAGE" value="-YEAH BUDDY" />
+    <MESSAGE value="-remove the magic numbers" />
+    <option name="LAST_COMMIT_MESSAGE" value="-remove the magic numbers" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -220,23 +238,13 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/util/PathFinder.java</url>
-          <line>79</line>
+          <line>80</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Simulation.java</url>
-          <line>33</line>
+          <line>36</line>
           <option name="timeStamp" value="32" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/elements/Movable.java</url>
-          <line>25</line>
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/elements/Movable.java</url>
-          <line>31</line>
-          <option name="timeStamp" value="37" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/elements/Movable.java</url>
@@ -248,31 +256,13 @@
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/gameMap/GameMap.java</url>
-          <line>89</line>
-          <properties class="gameMap.GameMap" method="moveEntity">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/elements/animals/Creature.java</url>
-          <line>121</line>
+          <line>123</line>
           <properties class="elements.animals.Creature" method="move">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="39" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/elements/Movable.java</url>
-          <line>18</line>
-          <properties class="elements.Movable" method="makeMoveToVictim">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="40" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

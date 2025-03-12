@@ -15,8 +15,5 @@ public interface Alive extends Locatable {
     void starving();
     int getNutritionalValue();
     boolean isDead();
-    default boolean isStarving() {
-        return getCurrentHunger() <= 0;
-    }
     void eat(int nutritionValue);
 }

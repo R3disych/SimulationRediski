@@ -9,10 +9,6 @@ public class Grass extends Entity implements Alive {
     private static final int MAX_HP = 1;
     private int Hp;
 
-    public Grass() {
-        super("G");
-    }
-
     public Grass(Coordinates coordinates) {
         super("G", coordinates);
         this.Hp = MAX_HP;

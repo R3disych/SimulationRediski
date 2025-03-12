@@ -19,11 +19,6 @@ public class Coordinates {
         return height;
     }
 
-    public void setCoordinates(int x, int y) {
-        this.width = x;
-        this.height = y;
-    }
-
     public double distanceTo(Coordinates other) {
         return Math.abs(this.getWidth() - other.getWidth()) + Math.abs(this.getHeight() - other.getHeight());
     }

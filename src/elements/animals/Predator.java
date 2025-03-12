@@ -10,10 +10,6 @@ public class Predator extends Creature {
     private static final int MAX_STAMINA = 3;
     private static final int DAMAGE = 25;
 
-    public Predator() {
-        super("P");
-    }
-
     public Predator(Coordinates coordinates) {
         super("P");
         this.setCoordinates(coordinates);

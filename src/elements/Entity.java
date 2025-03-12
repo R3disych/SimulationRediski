@@ -29,10 +29,6 @@ public abstract class Entity implements Identifiable, Locatable {
         return id;
     }
 
-    public void restoreTurns() {
-
-    }
-
     public Coordinates getCoordinates() {
         return coordinates;
     }
@@ -41,20 +37,8 @@ public abstract class Entity implements Identifiable, Locatable {
         this.coordinates = coordinates;
     }
 
-    public String printCoordinates() {
-        return "(" + coordinates.getHeight() + "," + coordinates.getWidth() + ")";
-    }
-
     public boolean isObstacle() {
         return false;
-    }
-
-    public List<Coordinates> getPath() {
-        return path;
-    }
-
-    public void setPath(List<Coordinates> path) {
-        this.path = path;
     }
 
     @Override

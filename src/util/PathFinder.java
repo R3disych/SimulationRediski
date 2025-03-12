@@ -7,13 +7,14 @@ import java.util.*;
 
 public class PathFinder {
     private Map<Coordinates, Locatable> gameMapEntity;
+    private final int RADIUS = 15;
 
     public PathFinder(GameMap map) {
         this.gameMapEntity = map.getGameMapLocatable();
     }
 
     public List<? extends Locatable> getEntitiesNear(Coordinates coordinates) {
-        return getEntitiesNear(coordinates, 15);
+        return getEntitiesNear(coordinates, RADIUS);
     }
 
     public List<? extends Locatable> getEntitiesNear(Coordinates coordinates, int radius) {

@@ -11,10 +11,6 @@ public class Herbivore extends Creature {
     private static final int MAX_STAMINA = 3;
     private static final int DAMAGE = 1;
 
-    public Herbivore() {
-        super("H");
-    }
-
     public Herbivore(Coordinates coordinates) {
         super("H");
         this.setCoordinates(coordinates);

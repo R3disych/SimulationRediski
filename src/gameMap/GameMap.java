@@ -24,8 +24,8 @@ public class GameMap {
         GameMap.gameMapLocatable = new HashMap<>();
     }
 
-    public static GameMap init(int width, int height) {
-        return new GameMap(width, height);
+    public static GameMap init(int row, int column) {
+        return new GameMap(row, column);
     }
 
     public static int getRow() {
@@ -37,11 +37,9 @@ public class GameMap {
     }
 
     public Map<Coordinates, Locatable> getGameMapLocatable() {
-        //return new HashMap<>(gameMapEntity);
         return gameMapLocatable;
     }
 
-    //сделать один метод, который будет принимать параметр Grass/Herbivore/Predator
     public int getNumOfGrass() {
         int count = 0;
         List<Locatable> entityList = getEntityList();
@@ -111,12 +109,4 @@ public class GameMap {
         }
         return (!(gameMapLocatable.get(coordinates).isObstacle()));
     }
-
-
-//    @Override
-//    public String toString() {
-//        return "GameMap{" +
-//                ", gameMapEntity=" + gameMapEntity +
-//                '}';
-//    }
 }

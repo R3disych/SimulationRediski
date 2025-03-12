@@ -110,15 +110,14 @@ public class GameMapUI extends JPanel {
                 int x = coordinates.getWidth() * CELL_SIZE;
                 int y = coordinates.getHeight() * CELL_SIZE;
 
-                // Отображение HP
+                /*
                 g.setColor(Color.BLACK);
                 g.drawString("HP: " + creature.getCurrentHp(), x + 5, y + 15);
 
-                // Отображение инициативы
                 g.drawString("Init: " + creature.getInitiative(), x + 5, y + 30);
 
-                // Отображение голода
                 g.drawString("Hunger: " + creature.getCurrentHunger(), x + 5, y + 40);
+                 */
             }
         }
     }
