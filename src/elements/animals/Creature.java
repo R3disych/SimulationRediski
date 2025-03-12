@@ -17,6 +17,10 @@ public abstract class Creature extends Entity implements Movable, Alive {
     private int hunger;
     private int stamina;
     private int initiative;
+    private final int MAX_INITIATIVE = 100;
+    private final int HUNGER_DECREMENT = 5;
+    private final int HP_DECREMENT = 10;
+
 
     private Random rand = new Random();
 
@@ -29,7 +33,7 @@ public abstract class Creature extends Entity implements Movable, Alive {
 
     @Override
     public void reinitInitiative() {
-        this.initiative = rand.nextInt(100) + 10;
+        this.initiative = rand.nextInt(MAX_INITIATIVE);
     }
 
     @Override
@@ -82,8 +86,11 @@ public abstract class Creature extends Entity implements Movable, Alive {
 
     @Override
     public boolean decraseHunger() {
-        this.hunger -= 5;
-        return hunger <= 0;
+        this.hunger -= HUNGER_DECREMENT;
+        if (hunger < 0) {
+            hunger = 0;
+        }
+        return hunger == 0;
     }
 
     @Override
@@ -99,7 +106,7 @@ public abstract class Creature extends Entity implements Movable, Alive {
 
     @Override
     public void starving() {
-        this.Hp -= 15;
+        this.Hp -= HP_DECREMENT;
     }
 
     public abstract Class<? extends Alive> getVictimType();

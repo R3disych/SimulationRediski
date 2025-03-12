@@ -21,6 +21,12 @@ public class Action {
     private Map<Coordinates, Locatable> gameMapLocateable;
     private Randomizer randomizer;
     private GameMapUI gameMapUI;
+    private final int INITIAL_PREDATOR_NUMBER = 13;
+    private final int INITIAL_HERBIVORE_NUMBER = 26;
+    private final int INITIAL_GRASS_NUMBER = 18;
+    private final int INITIAL_ROCK_NUMBER = 13;
+    private final int INITIAL_TREE = 26;
+    private final int REFILL_INTERVAL = 5;
 
     public Action(GameMap gameMap, Randomizer randomizer, GameMapUI gameMapUI) {
         this.gameMap = gameMap;
@@ -31,44 +37,36 @@ public class Action {
 
     public void initSimulation() {
         int i;
-        for (i = 0; i < 13; ++i) {
+        for (i = 0; i < INITIAL_PREDATOR_NUMBER; ++i) {
             gameMap.addEntityOnMap(new Predator(randomizer.getRandomCoordinates()));
         }
         randomizer.reinitializeFreeCells();
 
-        for (i = 0; i < 26; ++i) {
+        for (i = 0; i < INITIAL_HERBIVORE_NUMBER; ++i) {
             gameMap.addEntityOnMap(new Herbivore(randomizer.getRandomCoordinates()));
         }
         randomizer.reinitializeFreeCells();
 
-        for (i = 0; i < 13; ++i) {
+        for (i = 0; i < INITIAL_GRASS_NUMBER; ++i) {
             gameMap.addEntityOnMap(new Grass(randomizer.getRandomCoordinates()));
         }
         randomizer.reinitializeFreeCells();
 
-        for (i = 0; i < 13; ++i) {
+        for (i = 0; i < INITIAL_ROCK_NUMBER; ++i) {
             gameMap.addEntityOnMap(new Rock(randomizer.getRandomCoordinates()));
         }
         randomizer.reinitializeFreeCells();
 
-        for (i = 0; i < 26; ++i) {
+        for (i = 0; i < INITIAL_TREE; ++i) {
             gameMap.addEntityOnMap(new Tree(randomizer.getRandomCoordinates()));
         }
         randomizer.reinitializeFreeCells();
     }
 
     public void makeTurn() {
-        restoreStamina();
+        restoreMovablesStamina();
         PathFinder pathFinder = new PathFinder(gameMap);
-        Map<Coordinates, Locatable> gameMapEntity = gameMap.getGameMapLocatable();
-
-        List<Movable> entitiesToMove = new ArrayList<>();
-        for (Locatable entity : gameMapEntity.values()) {
-            if (entity instanceof Movable movable && !movable.isDead()) {
-                movable.reinitInitiative();
-                entitiesToMove.add(movable);
-            }
-        }
+        List<Movable> entitiesToMove = getMovablesToMove(gameMap.getGameMapLocatable());
 
         if (entitiesToMove.isEmpty()) {
             return;
@@ -83,14 +81,24 @@ public class Action {
         }
     }
 
-   public void clearMap() {
+    public List<Movable> getMovablesToMove(Map<Coordinates, Locatable> gameMapLocateable) {
+        List<Movable> movablesToMove = new ArrayList<>();
+        for (Locatable entity : gameMapLocateable.values()) {
+            if (entity instanceof Movable movable && !movable.isDead()) {
+                movable.reinitInitiative();
+                movablesToMove.add(movable);
+            }
+        }
+        return movablesToMove;
+    }
+
+    public void clearMapOfDead() {
         Map<Coordinates, Locatable> gameMapCopy = new HashMap<>(gameMap.getGameMapLocatable());
         for (Map.Entry<Coordinates, Locatable> entry : gameMapCopy.entrySet()) {
             Coordinates coordinates = entry.getKey();
             Locatable entity = entry.getValue();
             if (entity instanceof Alive alive) {
-                boolean dead = alive.isDead();
-                if (dead) {
+                if (alive.isDead()) {
                     gameMap.getGameMapLocatable().remove(coordinates);
                 }
             }
@@ -98,28 +106,28 @@ public class Action {
     }
 
     public void fillGameMap(int i) {
-        if (i % 5 == 0) {
-            if (gameMap.getNumOfGrass() < 10) {
-                for (int y = 0; gameMap.getNumOfGrass() < 10; y++) {
+        if (i % REFILL_INTERVAL == 0) {
+            if (gameMap.getNumOfGrass() < INITIAL_GRASS_NUMBER) {
+                for (int y = 0; gameMap.getNumOfGrass() < INITIAL_GRASS_NUMBER; y++) {
                     gameMap.addEntityOnMap(new Grass(randomizer.getRandomCoordinates()));
                 }
             }
 
-            if (gameMap.getNumOfHerbivore() < 26) {
-                for (int y = 0; gameMap.getNumOfHerbivore() < 26; y++) {
+            if (gameMap.getNumOfHerbivore() < INITIAL_HERBIVORE_NUMBER) {
+                for (int y = 0; gameMap.getNumOfHerbivore() < INITIAL_HERBIVORE_NUMBER; y++) {
                     gameMap.addEntityOnMap(new Herbivore(randomizer.getRandomCoordinates()));
                 }
             }
 
-            if (gameMap.getNumOfPredator() < 13) {
-                for (int y = 0; gameMap.getNumOfPredator() < 13; y++) {
+            if (gameMap.getNumOfPredator() < INITIAL_PREDATOR_NUMBER) {
+                for (int y = 0; gameMap.getNumOfPredator() < INITIAL_PREDATOR_NUMBER; y++) {
                     gameMap.addEntityOnMap(new Predator(randomizer.getRandomCoordinates()));
                 }
             }
         }
     }
 
-    public void restoreStamina() {
+    public void restoreMovablesStamina() {
         for (Locatable moveable : gameMap.getGameMapLocatable().values()) {
             if (moveable instanceof Movable movable2) {
                 movable2.restoreStamina();

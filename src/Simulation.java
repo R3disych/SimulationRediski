@@ -27,7 +27,7 @@ public class Simulation {
             AtomicInteger turn = new AtomicInteger();
             Timer timer = new Timer(100, e -> {
                 synchronized (gameMap) {
-                    action.clearMap();
+                    action.clearMapOfDead();
                     randomizer.reinitializeFreeCells();
                     action.fillGameMap(turn.get());
                     randomizer.reinitializeFreeCells();
