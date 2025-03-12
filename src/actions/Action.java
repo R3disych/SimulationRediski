@@ -21,43 +21,62 @@ public class Action {
     private Map<Coordinates, Locatable> gameMapLocateable;
     private Randomizer randomizer;
     private GameMapUI gameMapUI;
-    private final int INITIAL_PREDATOR_NUMBER = 13;
-    private final int INITIAL_HERBIVORE_NUMBER = 26;
-    private final int INITIAL_GRASS_NUMBER = 18;
-    private final int INITIAL_ROCK_NUMBER = 13;
-    private final int INITIAL_TREE = 26;
-    private final int REFILL_INTERVAL = 5;
+    private static final int DEFAULT_FIELD = 64;
+    private static final int REFILL_INTERVAL = 5;
+
+    private static final int DEFAULT_PREDATOR_RATE = 1;
+    private static final int DEFAULT_HERBIVORE_RATE = 2;
+    private static final int DEFAULT_GRASS_RATE = 2;
+    private static final int DEFAULT_TREE_RATE = 3;
+    private static final int DEFAULT_ROCK_RATE = 2;
+
+    private int initialPredatorNumber;
+    private int initialHerbivoreNumber;
+    private int initialGrassNumber;
+    private int initialRockNumber;
+    private int initialTreeNumber;
 
     public Action(GameMap gameMap, Randomizer randomizer, GameMapUI gameMapUI) {
         this.gameMap = gameMap;
         this.gameMapLocateable = gameMap.getGameMapLocatable();
         this.randomizer = randomizer;
         this.gameMapUI = gameMapUI;
+        setNumberOfEntities();
+    }
+
+    private void setNumberOfEntities() {
+        int numOfCells = GameMap.getRow() * GameMap.getColumn();
+        int numOfFields = numOfCells / DEFAULT_FIELD;
+        initialPredatorNumber = numOfFields * DEFAULT_PREDATOR_RATE;
+        initialHerbivoreNumber = numOfFields * DEFAULT_HERBIVORE_RATE;
+        initialGrassNumber = numOfFields * DEFAULT_GRASS_RATE;
+        initialRockNumber = numOfFields * DEFAULT_ROCK_RATE;
+        initialTreeNumber = numOfFields * DEFAULT_TREE_RATE;
     }
 
     public void initSimulation() {
         int i;
-        for (i = 0; i < INITIAL_PREDATOR_NUMBER; ++i) {
+        for (i = 0; i < initialPredatorNumber; ++i) {
             gameMap.addEntityOnMap(new Predator(randomizer.getRandomCoordinates()));
         }
         randomizer.reinitializeFreeCells();
 
-        for (i = 0; i < INITIAL_HERBIVORE_NUMBER; ++i) {
+        for (i = 0; i < initialHerbivoreNumber; ++i) {
             gameMap.addEntityOnMap(new Herbivore(randomizer.getRandomCoordinates()));
         }
         randomizer.reinitializeFreeCells();
 
-        for (i = 0; i < INITIAL_GRASS_NUMBER; ++i) {
+        for (i = 0; i < initialGrassNumber; ++i) {
             gameMap.addEntityOnMap(new Grass(randomizer.getRandomCoordinates()));
         }
         randomizer.reinitializeFreeCells();
 
-        for (i = 0; i < INITIAL_ROCK_NUMBER; ++i) {
+        for (i = 0; i < initialRockNumber; ++i) {
             gameMap.addEntityOnMap(new Rock(randomizer.getRandomCoordinates()));
         }
         randomizer.reinitializeFreeCells();
 
-        for (i = 0; i < INITIAL_TREE; ++i) {
+        for (i = 0; i < initialTreeNumber; ++i) {
             gameMap.addEntityOnMap(new Tree(randomizer.getRandomCoordinates()));
         }
         randomizer.reinitializeFreeCells();
@@ -107,20 +126,20 @@ public class Action {
 
     public void fillGameMap(int i) {
         if (i % REFILL_INTERVAL == 0) {
-            if (gameMap.getNumOfGrass() < INITIAL_GRASS_NUMBER) {
-                for (int y = 0; gameMap.getNumOfGrass() < INITIAL_GRASS_NUMBER; y++) {
+            if (gameMap.getNumOfGrass() < initialGrassNumber) {
+                for (int y = 0; gameMap.getNumOfGrass() < initialGrassNumber; y++) {
                     gameMap.addEntityOnMap(new Grass(randomizer.getRandomCoordinates()));
                 }
             }
 
-            if (gameMap.getNumOfHerbivore() < INITIAL_HERBIVORE_NUMBER) {
-                for (int y = 0; gameMap.getNumOfHerbivore() < INITIAL_HERBIVORE_NUMBER; y++) {
+            if (gameMap.getNumOfHerbivore() < initialHerbivoreNumber) {
+                for (int y = 0; gameMap.getNumOfHerbivore() < initialHerbivoreNumber; y++) {
                     gameMap.addEntityOnMap(new Herbivore(randomizer.getRandomCoordinates()));
                 }
             }
 
-            if (gameMap.getNumOfPredator() < INITIAL_PREDATOR_NUMBER) {
-                for (int y = 0; gameMap.getNumOfPredator() < INITIAL_PREDATOR_NUMBER; y++) {
+            if (gameMap.getNumOfPredator() < initialPredatorNumber) {
+                for (int y = 0; gameMap.getNumOfPredator() < initialPredatorNumber; y++) {
                     gameMap.addEntityOnMap(new Predator(randomizer.getRandomCoordinates()));
                 }
             }
