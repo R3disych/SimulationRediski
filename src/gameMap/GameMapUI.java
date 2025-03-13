@@ -17,17 +17,14 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Map;
 
 public class GameMapUI extends JPanel {
     private GameMap gameMap;
-    private Map<Coordinates, Locatable> gameMapEntity;
     private HashMap<String, BufferedImage> images = new HashMap<>();
     private final int CELL_SIZE = 45;
 
     public GameMapUI(GameMap gameMap) {
         this.gameMap = gameMap;
-        this.gameMapEntity = gameMap.getGameMapLocatable();
         loadImages();
         setPreferredSize(new Dimension(1920, 1080));
     }
@@ -67,8 +64,8 @@ public class GameMapUI extends JPanel {
             }
         }
 
-        for(Coordinates coordinates : gameMapEntity.keySet()) {
-            Locatable entity = gameMapEntity.get(coordinates);
+        for(Coordinates coordinates : gameMap.getGameMapLocatable().keySet()) {
+            Locatable entity = gameMap.getGameMapLocatable().get(coordinates);
             BufferedImage image = null;
             if(entity instanceof Grass) {
                 Alive aliveEntity = (Alive) entity;
@@ -98,17 +95,17 @@ public class GameMapUI extends JPanel {
             }
 
             if(image != null) {
-                g.drawImage(image, coordinates.getWidth() * CELL_SIZE, coordinates.getHeight() * CELL_SIZE, CELL_SIZE, CELL_SIZE, this);
-                g.drawString(String.valueOf(entity.getId()), coordinates.getWidth() * CELL_SIZE, coordinates.getHeight() * CELL_SIZE);
+                g.drawImage(image, coordinates.getRow() * CELL_SIZE, coordinates.getColumn() * CELL_SIZE, CELL_SIZE, CELL_SIZE, this);
+                g.drawString(String.valueOf(entity.getId()), coordinates.getRow() * CELL_SIZE, coordinates.getColumn() * CELL_SIZE);
             } else {
                 g.setColor(Color.RED);
-                g.fillOval(coordinates.getWidth() * CELL_SIZE, coordinates.getHeight() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                g.fillOval(coordinates.getRow() * CELL_SIZE, coordinates.getColumn() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
 
             if (entity instanceof Creature) {
                 Creature creature = (Creature) entity;
-                int x = coordinates.getWidth() * CELL_SIZE;
-                int y = coordinates.getHeight() * CELL_SIZE;
+                int x = coordinates.getRow() * CELL_SIZE;
+                int y = coordinates.getColumn() * CELL_SIZE;
 
                 /*
                 g.setColor(Color.BLACK);

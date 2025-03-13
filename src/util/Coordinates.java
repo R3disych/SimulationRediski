@@ -3,24 +3,24 @@ package util;
 import java.util.Objects;
 
 public class Coordinates {
-    private int width;
-    private int height;
+    private int row;
+    private int column;
 
     public Coordinates(int x, int y) {
-        this.width = x;
-        this.height = y;
+        this.row = x;
+        this.column = y;
     }
 
-    public int getWidth() {
-        return width;
+    public int getRow() {
+        return row;
     }
 
-    public int getHeight() {
-        return height;
+    public int getColumn() {
+        return column;
     }
 
     public double distanceTo(Coordinates other) {
-        return Math.abs(this.getWidth() - other.getWidth()) + Math.abs(this.getHeight() - other.getHeight());
+        return Math.abs(this.getRow() - other.getRow()) + Math.abs(this.getColumn() - other.getColumn());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class Coordinates {
             return true;
         } else if(obj != null && this.getClass() == obj.getClass()) {
             Coordinates c = (Coordinates)obj;
-            return this.width == c.width && this.height == c.height;
+            return this.row == c.row && this.column == c.column;
         } else {
             return false;
         }
@@ -37,14 +37,14 @@ public class Coordinates {
 
     @Override
     public int hashCode() {
-        return Objects.hash(new Object[]{this.width, this.height});
+        return Objects.hash(new Object[]{this.row, this.column});
     }
 
     @Override
     public String toString() {
         return "Coordinates{" +
-                "width=" + width +
-                ", height=" + height +
+                "row=" + row +
+                ", column=" + column +
                 '}';
     }
 }

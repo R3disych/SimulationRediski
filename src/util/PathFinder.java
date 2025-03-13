@@ -13,11 +13,11 @@ public class PathFinder {
         this.gameMapEntity = map.getGameMapLocatable();
     }
 
-    public List<? extends Locatable> getEntitiesNear(Coordinates coordinates) {
+    public List<Locatable> getEntitiesNear(Coordinates coordinates) {
         return getEntitiesNear(coordinates, RADIUS);
     }
 
-    public List<? extends Locatable> getEntitiesNear(Coordinates coordinates, int radius) {
+    public List<Locatable> getEntitiesNear(Coordinates coordinates, int radius) {
         List<Locatable> entities = new ArrayList<>();
         for(Locatable entity : gameMapEntity.values()) {
             if(coordinates.distanceTo(entity.getCoordinates()) <= radius) {
@@ -92,8 +92,8 @@ public class PathFinder {
 
     public List<Coordinates> getNeighbors(Coordinates current, Coordinates target) {
         List<Coordinates> neighbors = new ArrayList<>();
-        int x = current.getWidth();
-        int y = current.getHeight();
+        int x = current.getRow();
+        int y = current.getColumn();
 
         int[] dx = {0, 0, -1, 1};
         int[] dy = {-1, 1, 0, 0};
@@ -116,6 +116,57 @@ public class PathFinder {
     }
 
     public int heuristicFunction(Coordinates start, Coordinates target) {
-        return Math.abs(target.getWidth() - start.getWidth()) + Math.abs(target.getHeight() - start.getHeight());
+        return Math.abs(target.getRow() - start.getRow()) + Math.abs(target.getColumn() - start.getColumn());
+    }
+
+    private static class Node {
+        private Node parent;
+        private final Coordinates coordinates;
+
+        private int gScore;
+        private int hScore;
+        private int fScore;
+
+
+        private Node(Coordinates coordinates) {
+            this.coordinates = coordinates;
+            this.gScore = 0;
+            this.hScore = 0;
+            this.fScore = 0;
+        }
+
+        private Coordinates getCoordinates() {
+            return coordinates;
+        }
+
+        private Node getParent() {
+            return parent;
+        }
+
+        private void setParent(Node parent) {
+            this.parent = parent;
+        }
+
+        private int getGScore() {
+            return gScore;
+        }
+
+        private void setGScore(int gScore) {
+            this.gScore = gScore;
+            setFScore();
+        }
+
+        private void setHScore(int hScore) {
+            this.hScore = hScore;
+            setFScore();
+        }
+
+        public int getFScore() {
+            return fScore;
+        }
+
+        public void setFScore() {
+            this.fScore = gScore + hScore;
+        }
     }
 }

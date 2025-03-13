@@ -12,7 +12,7 @@ public class Simulation {
     private static final int HIGH_SPEED = 100;
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            GameMap gameMap = GameMap.init(25, 28);
+            GameMap gameMap = GameMap.init(40, 22);
             Randomizer randomizer = new Randomizer(gameMap);
             GameMapUI gameMapUI = new GameMapUI(gameMap);
             Action action = new Action(gameMap, randomizer, gameMapUI);

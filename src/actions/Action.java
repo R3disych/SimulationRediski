@@ -18,7 +18,6 @@ import java.util.*;
 
 public class Action {
     private GameMap gameMap;
-    private Map<Coordinates, Locatable> gameMapLocateable;
     private Randomizer randomizer;
     private GameMapUI gameMapUI;
     private static final int DEFAULT_FIELD = 64;
@@ -38,7 +37,6 @@ public class Action {
 
     public Action(GameMap gameMap, Randomizer randomizer, GameMapUI gameMapUI) {
         this.gameMap = gameMap;
-        this.gameMapLocateable = gameMap.getGameMapLocatable();
         this.randomizer = randomizer;
         this.gameMapUI = gameMapUI;
         setNumberOfEntities();
@@ -55,56 +53,51 @@ public class Action {
     }
 
     public void initSimulation() {
-        int i;
-        for (i = 0; i < initialPredatorNumber; ++i) {
+        for (int i = 0; i < initialPredatorNumber; i++) {
             gameMap.addEntityOnMap(new Predator(randomizer.getRandomCoordinates()));
         }
-        randomizer.reinitializeFreeCells();
 
-        for (i = 0; i < initialHerbivoreNumber; ++i) {
+        for (int i = 0; i < initialHerbivoreNumber; i++) {
             gameMap.addEntityOnMap(new Herbivore(randomizer.getRandomCoordinates()));
         }
-        randomizer.reinitializeFreeCells();
 
-        for (i = 0; i < initialGrassNumber; ++i) {
+        for (int i = 0; i < initialGrassNumber; i++) {
             gameMap.addEntityOnMap(new Grass(randomizer.getRandomCoordinates()));
         }
-        randomizer.reinitializeFreeCells();
 
-        for (i = 0; i < initialRockNumber; ++i) {
+        for (int i = 0; i < initialRockNumber; i++) {
             gameMap.addEntityOnMap(new Rock(randomizer.getRandomCoordinates()));
         }
-        randomizer.reinitializeFreeCells();
 
-        for (i = 0; i < initialTreeNumber; ++i) {
+        for (int i = 0; i < initialTreeNumber; i++) {
             gameMap.addEntityOnMap(new Tree(randomizer.getRandomCoordinates()));
         }
-        randomizer.reinitializeFreeCells();
     }
 
     public void makeTurn() {
-        restoreMovablesStamina();
+        restoreEveryoneStamina();
         PathFinder pathFinder = new PathFinder(gameMap);
-        List<Movable> entitiesToMove = getMovablesToMove(gameMap.getGameMapLocatable());
+        List<Movable> MovablesToMove = getMovables(gameMap.getGameMapLocatable());
 
-        if (entitiesToMove.isEmpty()) {
+        if (MovablesToMove.isEmpty()) {
             return;
         }
 
-        entitiesToMove.sort(Comparator.comparingInt(Movable::getInitiative).reversed());
-        for (Movable creature : entitiesToMove) {
-            if (!creature.isDead()) {
-                creature.move(gameMap, pathFinder);
-                gameMapUI.repaint();
-            }
+        for (Movable movable : MovablesToMove) {
+            movable.reinitInitiative();
+        }
+
+        MovablesToMove.sort(Comparator.comparingInt(Movable::getInitiative).reversed());
+        for (Movable creature : MovablesToMove) {
+            creature.move(gameMap, pathFinder);
+            gameMapUI.repaint();
         }
     }
 
-    public List<Movable> getMovablesToMove(Map<Coordinates, Locatable> gameMapLocateable) {
+    public List<Movable> getMovables(Map<Coordinates, Locatable> gameMapLocateable) {
         List<Movable> movablesToMove = new ArrayList<>();
         for (Locatable entity : gameMapLocateable.values()) {
             if (entity instanceof Movable movable && !movable.isDead()) {
-                movable.reinitInitiative();
                 movablesToMove.add(movable);
             }
         }
@@ -112,42 +105,42 @@ public class Action {
     }
 
     public void clearMapOfDead() {
-        Map<Coordinates, Locatable> gameMapCopy = new HashMap<>(gameMap.getGameMapLocatable());
+        Map<Coordinates, Locatable> gameMapCopy = gameMap.getGameMapLocatable();
         for (Map.Entry<Coordinates, Locatable> entry : gameMapCopy.entrySet()) {
             Coordinates coordinates = entry.getKey();
             Locatable entity = entry.getValue();
             if (entity instanceof Alive alive) {
                 if (alive.isDead()) {
-                    gameMap.getGameMapLocatable().remove(coordinates);
+                    gameMap.removeEntity(coordinates);
                 }
             }
         }
     }
 
-    public void fillGameMap(int i) {
-        if (i % REFILL_INTERVAL == 0) {
-            if (gameMap.getNumOfGrass() < initialGrassNumber) {
-                for (int y = 0; gameMap.getNumOfGrass() < initialGrassNumber; y++) {
+    public void fillGameMap(int currentTurn) {
+        if (currentTurn % REFILL_INTERVAL == 0) {
+            if (gameMap.getNumOf(Grass.class) < initialGrassNumber) {
+                while (gameMap.getNumOf(Grass.class) < initialGrassNumber) {
                     gameMap.addEntityOnMap(new Grass(randomizer.getRandomCoordinates()));
                 }
             }
 
-            if (gameMap.getNumOfHerbivore() < initialHerbivoreNumber) {
-                for (int y = 0; gameMap.getNumOfHerbivore() < initialHerbivoreNumber; y++) {
+            if (gameMap.getNumOf(Herbivore.class) < initialHerbivoreNumber) {
+                while (gameMap.getNumOf(Herbivore.class) < initialHerbivoreNumber) {
                     gameMap.addEntityOnMap(new Herbivore(randomizer.getRandomCoordinates()));
                 }
             }
 
-            if (gameMap.getNumOfPredator() < initialPredatorNumber) {
-                for (int y = 0; gameMap.getNumOfPredator() < initialPredatorNumber; y++) {
+            if (gameMap.getNumOf(Predator.class) < initialPredatorNumber) {
+                while (gameMap.getNumOf(Predator.class) < initialPredatorNumber) {
                     gameMap.addEntityOnMap(new Predator(randomizer.getRandomCoordinates()));
                 }
             }
         }
     }
 
-    public void restoreMovablesStamina() {
-        for (Locatable moveable : gameMap.getGameMapLocatable().values()) {
+    private void restoreEveryoneStamina() {
+        for (Locatable moveable : gameMap.getEntityList()) {
             if (moveable instanceof Movable movable2) {
                 movable2.restoreStamina();
             }

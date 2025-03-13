@@ -10,7 +10,7 @@ public class Grass extends Entity implements Alive {
     private int Hp;
 
     public Grass(Coordinates coordinates) {
-        super("G", coordinates);
+        super(coordinates);
         this.Hp = MAX_HP;
     }
 
@@ -62,5 +62,10 @@ public class Grass extends Entity implements Alive {
 
     @Override
     public void eat(int nutritionValue) {
+    }
+
+    @Override
+    public boolean isObstacle() {
+        return false;
     }
 }

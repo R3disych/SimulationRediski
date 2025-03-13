@@ -1,5 +1,5 @@
 package elements;
 
-public interface Identifiable {
+public interface Identifable {
     int getId();
 }

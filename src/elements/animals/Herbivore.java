@@ -12,7 +12,7 @@ public class Herbivore extends Creature {
     private static final int DAMAGE = 1;
 
     public Herbivore(Coordinates coordinates) {
-        super("H");
+        super(coordinates);
         this.setCoordinates(coordinates);
     }
 
