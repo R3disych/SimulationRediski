@@ -5,7 +5,7 @@ import util.Coordinates;
 
 public class Rock extends Entity {
     public Rock(Coordinates coordinates) {
-        super("R", coordinates);
+        super(coordinates);
     }
 
     @Override

@@ -5,7 +5,7 @@ import util.Coordinates;
 
 public class Tree extends Entity {
     public Tree(Coordinates coordinates) {
-        super("T", coordinates);
+        super(coordinates);
     }
 
     @Override

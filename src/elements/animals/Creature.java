@@ -1,19 +1,21 @@
 package elements.animals;
 
+import elements.AbstractMovables;
 import elements.Alive;
 import elements.Entity;
 import elements.Movable;
 import gameMap.GameMap;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
 import util.Coordinates;
 import util.PathFinder;
 
-public abstract class Creature extends Entity implements Movable, Alive {
-    private int Hp;
+public abstract class Creature extends AbstractMovables implements Movable, Alive {
+    private int hp;
     private int hunger;
     private int stamina;
     private int initiative;
@@ -24,9 +26,9 @@ public abstract class Creature extends Entity implements Movable, Alive {
 
     private Random rand = new Random();
 
-    public Creature(String display) {
-        super(display);
-        this.Hp = getMaxHp();
+    public Creature(Coordinates coordinates) {
+        super(coordinates);
+        this.hp = getMaxHp();
         this.hunger = getMaxHunger();
         restoreStamina();
     }
@@ -43,7 +45,7 @@ public abstract class Creature extends Entity implements Movable, Alive {
 
     @Override
     public int getCurrentHp() {
-        return Hp;
+        return hp;
     }
 
     @Override
@@ -67,11 +69,6 @@ public abstract class Creature extends Entity implements Movable, Alive {
     }
 
     @Override
-    public void step(GameMap gameMap, Coordinates target) {
-        Movable.super.step(gameMap, target);
-    }
-
-    @Override
     public boolean isObstacle() {
         return true;
     }
@@ -82,6 +79,7 @@ public abstract class Creature extends Entity implements Movable, Alive {
         if (hunger > getMaxHunger()) {
             hunger = getMaxHunger();
         }
+        spendStamina();
     }
 
     @Override
@@ -95,8 +93,8 @@ public abstract class Creature extends Entity implements Movable, Alive {
 
     @Override
     public boolean decreaseHp(int damage) {
-        this.Hp -= damage;
-        return Hp <= 0;
+        this.hp -= damage;
+        return hp <= 0;
     }
 
     @Override
@@ -106,10 +104,10 @@ public abstract class Creature extends Entity implements Movable, Alive {
 
     @Override
     public void starving() {
-        this.Hp -= HP_DECREMENT;
+        this.hp -= HP_DECREMENT;
     }
 
-    public abstract Class<? extends Alive> getVictimType();
+    protected abstract Class<? extends Alive> getVictimType();
 
     public Optional<Alive> findNearestVictim(PathFinder pathFinder) {
         return pathFinder.getEntitiesNear(this.getCoordinates(), 20)
@@ -120,6 +118,21 @@ public abstract class Creature extends Entity implements Movable, Alive {
                         this.getCoordinates().distanceTo(victim.getCoordinates())));
     }
 
+    protected void makeMoveToVictim(GameMap gameMap, PathFinder pathFinder, Alive victim) {
+        List<Coordinates> path = pathFinder.findPath(this.getCoordinates(), victim.getCoordinates());
+        if (path == null || path.isEmpty() || path.size() == 1) {
+            makeRandomStep(gameMap);
+            return;
+        }
+
+        Coordinates nextStep = path.get(1);
+        if (GameMap.isAccessibleCoordinate(nextStep) && GameMap.isWalkable(nextStep)) {
+            step(gameMap, nextStep);
+        } else {
+            makeRandomStep(gameMap);
+        }
+    }
+
     @Override
     public void move(GameMap gameMap, PathFinder pathFinder) {
         Optional<Alive> nearestVictim = findNearestVictim(pathFinder);
@@ -128,15 +141,12 @@ public abstract class Creature extends Entity implements Movable, Alive {
             if (this.getCoordinates().distanceTo(victim.getCoordinates()) <= 1 && !victim.isDead()) {
                 eat(victim.getNutritionalValue());
                 victim.decreaseHp(getDamage());
-                spendStamina();
             } else {
                 makeMoveToVictim(gameMap, pathFinder, victim);
-                spendStamina();
             }
         } else {
             if (canMakeRandomStep(gameMap)) {
                 makeRandomStep(gameMap);
-                spendStamina();
             }
         }
         boolean hungry = decraseHunger();

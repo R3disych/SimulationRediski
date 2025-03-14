@@ -13,7 +13,6 @@ public class Randomizer {
 
     public Randomizer(GameMap gameMap) {
         this.gameMap = gameMap;
-
     }
 
     public static int setRandomId() {

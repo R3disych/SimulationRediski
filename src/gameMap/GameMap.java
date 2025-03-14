@@ -37,36 +37,14 @@ public class GameMap {
     }
 
     public Map<Coordinates, Locatable> getGameMapLocatable() {
-        return gameMapLocatable;
+        return new HashMap<>(gameMapLocatable);
     }
 
-    public int getNumOfGrass() {
+    public int getNumOf(Class<? extends Locatable> locatableClass) {
         int count = 0;
-        List<Locatable> entityList = getEntityList();
-        for(Locatable l : entityList) {
-            if(l instanceof Grass) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public int getNumOfHerbivore() {
-        int count = 0;
-        List<Locatable> entityList = getEntityList();
-        for(Locatable l : entityList) {
-            if(l instanceof Herbivore) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public int getNumOfPredator() {
-        int count = 0;
-        List<Locatable> entityList = getEntityList();
-        for(Locatable l : entityList) {
-            if(l instanceof Predator) {
+        List<Locatable> locatables = getEntityList();
+        for (Locatable locatable : locatables) {
+            if (locatableClass.isInstance(locatable)) {
                 count++;
             }
         }
@@ -97,9 +75,13 @@ public class GameMap {
         }
     }
 
+    public void removeEntity(Coordinates coordinates) {
+        gameMapLocatable.remove(coordinates);
+    }
+
     public static boolean isAccessibleCoordinate(Coordinates coordinates) {
-        int x = coordinates.getWidth();
-        int y = coordinates.getHeight();
+        int x = coordinates.getRow();
+        int y = coordinates.getColumn();
         return x >= 0 && y >= 0 && x < GameMap.getRow() && y < GameMap.getColumn();
     }
 

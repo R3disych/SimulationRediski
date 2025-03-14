@@ -8,11 +8,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Simulation {
     private static final int LOW_SPEED = 2000;
-    private static final int MEDIUM_SPEED = 1000;
+    private static final int MEDIUM_SPEED = 800;
     private static final int HIGH_SPEED = 100;
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            GameMap gameMap = GameMap.init(25, 28);
+            GameMap gameMap = GameMap.init(40, 22);
             Randomizer randomizer = new Randomizer(gameMap);
             GameMapUI gameMapUI = new GameMapUI(gameMap);
             Action action = new Action(gameMap, randomizer, gameMapUI);
@@ -28,7 +28,7 @@ public class Simulation {
             action.initSimulation();
 
             AtomicInteger turn = new AtomicInteger();
-            Timer timer = new Timer(HIGH_SPEED, e -> {
+            Timer timer = new Timer(MEDIUM_SPEED, e -> {
                 synchronized (gameMap) {
                     action.clearMapOfDead();
                     randomizer.reinitializeFreeCells();
