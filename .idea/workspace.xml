@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90bca74d-c45c-4734-8d01-5cb523e450e5" name="Changes" comment="-refactoring">
-      <change afterPath="$PROJECT_DIR$/src/elements/AbstractMovables.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Simulation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/Movable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/Movable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/actions/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/Action.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/elements/AbstractMovables.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/AbstractMovable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/elements/animals/Creature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/animals/Creature.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gameMap/GameMapUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gameMap/GameMapUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,6 +118,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Test" />
+        <item itemvalue="Application.Simulation" />
         <item itemvalue="Application.Simulation" />
         <item itemvalue="Application.Test" />
       </list>

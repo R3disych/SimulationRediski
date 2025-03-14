@@ -140,9 +140,9 @@ public class Action {
     }
 
     private void restoreEveryoneStamina() {
-        for (Locatable moveable : gameMap.getEntityList()) {
-            if (moveable instanceof Movable movable2) {
-                movable2.restoreStamina();
+        for (Locatable locatable : gameMap.getEntityList()) {
+            if (locatable instanceof Movable movable) {
+                movable.restoreStamina();
             }
         }
     }

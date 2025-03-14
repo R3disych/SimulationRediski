@@ -1,8 +1,7 @@
 package elements.animals;
 
-import elements.AbstractMovables;
+import elements.AbstractMovable;
 import elements.Alive;
-import elements.Entity;
 import elements.Movable;
 import gameMap.GameMap;
 
@@ -14,7 +13,7 @@ import java.util.Random;
 import util.Coordinates;
 import util.PathFinder;
 
-public abstract class Creature extends AbstractMovables implements Movable, Alive {
+public abstract class Creature extends AbstractMovable implements Movable, Alive {
     private int hp;
     private int hunger;
     private int stamina;
@@ -79,7 +78,6 @@ public abstract class Creature extends AbstractMovables implements Movable, Aliv
         if (hunger > getMaxHunger()) {
             hunger = getMaxHunger();
         }
-        spendStamina();
     }
 
     @Override
@@ -109,7 +107,7 @@ public abstract class Creature extends AbstractMovables implements Movable, Aliv
 
     protected abstract Class<? extends Alive> getVictimType();
 
-    public Optional<Alive> findNearestVictim(PathFinder pathFinder) {
+    protected Optional<Alive> findNearestVictim(PathFinder pathFinder) {
         return pathFinder.getEntitiesNear(this.getCoordinates(), 20)
                 .stream()
                 .filter(entity -> entity.getClass().equals(getVictimType()))
@@ -153,5 +151,6 @@ public abstract class Creature extends AbstractMovables implements Movable, Aliv
         if (hungry) {
             starving();
         }
+        spendStamina();
     }
 }
