@@ -77,18 +77,18 @@ public class Action {
     public void makeTurn() {
         restoreEveryoneStamina();
         PathFinder pathFinder = new PathFinder(gameMap);
-        List<Movable> MovablesToMove = getMovables(gameMap.getGameMapLocatable());
+        List<Movable> movablesToMove = getMovables(gameMap.getGameMapLocatable());
 
-        if (MovablesToMove.isEmpty()) {
+        if (movablesToMove.isEmpty()) {
             return;
         }
 
-        for (Movable movable : MovablesToMove) {
+        for (Movable movable : movablesToMove) {
             movable.reinitInitiative();
         }
 
-        MovablesToMove.sort(Comparator.comparingInt(Movable::getInitiative).reversed());
-        for (Movable creature : MovablesToMove) {
+        movablesToMove.sort(Comparator.comparingInt(Movable::getInitiative).reversed());
+        for (Movable creature : movablesToMove) {
             creature.move(gameMap, pathFinder);
             gameMapUI.repaint();
         }
@@ -140,9 +140,9 @@ public class Action {
     }
 
     private void restoreEveryoneStamina() {
-        for (Locatable moveable : gameMap.getEntityList()) {
-            if (moveable instanceof Movable movable2) {
-                movable2.restoreStamina();
+        for (Locatable locatable : gameMap.getEntityList()) {
+            if (locatable instanceof Movable movable) {
+                movable.restoreStamina();
             }
         }
     }

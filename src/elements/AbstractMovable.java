@@ -6,8 +6,8 @@ import util.Coordinates;
 import java.util.Map;
 import java.util.Random;
 
-public abstract class AbstractMovables  extends Entity implements Movable {
-    public AbstractMovables(Coordinates coordinates) {
+public abstract class AbstractMovable extends Entity implements Movable {
+    public AbstractMovable(Coordinates coordinates) {
         super(coordinates);
     }
 
@@ -15,7 +15,6 @@ public abstract class AbstractMovables  extends Entity implements Movable {
         if (canStep() && GameMap.isAccessibleCoordinate(nextStep) && GameMap.isWalkable(nextStep)) {
             gameMap.moveEntity(this, nextStep);
             setCoordinates(nextStep);
-            spendStamina();
         }
     }
     protected boolean canStep() {
