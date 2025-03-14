@@ -96,7 +96,7 @@ public class GameMapUI extends JPanel {
 
             if(image != null) {
                 g.drawImage(image, coordinates.getRow() * CELL_SIZE, coordinates.getColumn() * CELL_SIZE, CELL_SIZE, CELL_SIZE, this);
-                g.drawString(String.valueOf(entity.getId()), coordinates.getRow() * CELL_SIZE, coordinates.getColumn() * CELL_SIZE);
+                //g.drawString(String.valueOf(entity.getId()), coordinates.getRow() * CELL_SIZE, coordinates.getColumn() * CELL_SIZE);
             } else {
                 g.setColor(Color.RED);
                 g.fillOval(coordinates.getRow() * CELL_SIZE, coordinates.getColumn() * CELL_SIZE, CELL_SIZE, CELL_SIZE);

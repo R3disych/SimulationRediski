@@ -4,27 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90bca74d-c45c-4734-8d01-5cb523e450e5" name="Changes" comment="-add autocalculation of entities on a map based on its size">
+    <list default="true" id="90bca74d-c45c-4734-8d01-5cb523e450e5" name="Changes" comment="-refactoring">
+      <change afterPath="$PROJECT_DIR$/src/elements/AbstractMovables.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Simulation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Test.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/actions/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/Action.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/Entity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/Identifiable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/Identifable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/Locatable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/Locatable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/elements/Movable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/Movable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/elements/animals/Creature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/animals/Creature.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/animals/Herbivore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/animals/Herbivore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/animals/Predator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/animals/Predator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/staticObjects/Grass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/staticObjects/Grass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/staticObjects/Rock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/staticObjects/Rock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/staticObjects/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/staticObjects/Tree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gameMap/GameMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gameMap/GameMap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gameMap/GameMapUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gameMap/GameMapUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/Coordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/Coordinates.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/Node.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/PathFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/PathFinder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/Randomizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/Randomizer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,7 +151,8 @@
       <workItem from="1741756838056" duration="6565000" />
       <workItem from="1741774468153" duration="94000" />
       <workItem from="1741774569265" duration="1164000" />
-      <workItem from="1741849845455" duration="13406000" />
+      <workItem from="1741849845455" duration="13528000" />
+      <workItem from="1741930376117" duration="1030000" />
     </task>
     <task id="LOCAL-00001" summary="-another try to resolve all">
       <option name="closed" value="true" />
@@ -231,7 +218,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741763788159</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="-refactoring">
+      <option name="closed" value="true" />
+      <created>1741882673202</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1741882673202</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -270,7 +265,8 @@
     <MESSAGE value="-code refactoring" />
     <MESSAGE value="-add calculation of entities on a map based on its size" />
     <MESSAGE value="-add autocalculation of entities on a map based on its size" />
-    <option name="LAST_COMMIT_MESSAGE" value="-add autocalculation of entities on a map based on its size" />
+    <MESSAGE value="-refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="-refactoring" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

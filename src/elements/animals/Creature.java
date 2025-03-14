@@ -1,5 +1,6 @@
 package elements.animals;
 
+import elements.AbstractMovables;
 import elements.Alive;
 import elements.Entity;
 import elements.Movable;
@@ -13,7 +14,7 @@ import java.util.Random;
 import util.Coordinates;
 import util.PathFinder;
 
-public abstract class Creature extends Entity implements Movable, Alive {
+public abstract class Creature extends AbstractMovables implements Movable, Alive {
     private int hp;
     private int hunger;
     private int stamina;
@@ -65,11 +66,6 @@ public abstract class Creature extends Entity implements Movable, Alive {
     @Override
     public void spendStamina() {
         stamina--;
-    }
-
-    @Override
-    public void step(GameMap gameMap, Coordinates target) {
-        Movable.super.step(gameMap, target);
     }
 
     @Override
